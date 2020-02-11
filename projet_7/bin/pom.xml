@@ -50,12 +50,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-	<!-- ModelMapper (DTO) -->
-	<dependency>
-		<groupId>org.modelmapper</groupId>
-		<artifactId>modelmapper</artifactId>
-		<version>2.3.5</version>
-	</dependency>
 	</dependencies>
 
 	<build>
