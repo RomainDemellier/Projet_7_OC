@@ -1,11 +1,18 @@
 package com.oc.projets.projet_7.entity;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -20,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdAt", "updateAt"},
 		allowGetters = true)
-public class Usager {
+public class Usager implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,9 +43,81 @@ public class Usager {
 	
 	@NotBlank
 	@Column(unique = true)
-	@Email
+	@Email(message = "Cette adresse mail n'est pas valide.")
 	private String email;
 	
 	@NotBlank
+	//@Size(min = 8, max = 16, message = "Le password doit être compris entre 8 et 16 caractères.")
 	private String password;
+	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "usager_id")
+	private List<Emprunt> listEmprunts = new ArrayList<Emprunt>();
+
+	public Usager() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Usager(String email, String password) {
+		// TODO Auto-generated constructor stub
+		this.email = email;
+		this.password = password;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public String getPrenom() {
+		return prenom;
+	}
+
+	public void setPrenom(String prenom) {
+		this.prenom = prenom;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public List<Emprunt> getListEmprunts() {
+		return listEmprunts;
+	}
+
+	public void setListEmprunts(List<Emprunt> listEmprunts) {
+		this.listEmprunts = listEmprunts;
+	}
+	
+	public void addEmprunt(Emprunt emprunt) {
+		this.listEmprunts.add(emprunt);
+	}
+	
+	public void deleteEmprunt(Emprunt emprunt) {
+		this.listEmprunts.remove(emprunt);
+	}
 }
