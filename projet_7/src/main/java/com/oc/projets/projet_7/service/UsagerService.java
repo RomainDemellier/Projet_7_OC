@@ -52,6 +52,10 @@ public class UsagerService {
 	
 	public Usager emprunter(Usager usager, Livre livre) throws EmpruntException {
 		
+		if(livre.getNbreExemplaires() <= 0) {
+			throw new EmpruntException("Ce livre n'est pas disponible pour le moment.");
+		}
+		
 		List<Emprunt> emprunts = usager.getListEmprunts();
 		
 		for(int i = 0;i < emprunts.size();i++) {

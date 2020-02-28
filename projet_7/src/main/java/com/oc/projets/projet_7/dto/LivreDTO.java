@@ -1,16 +1,19 @@
 package com.oc.projets.projet_7.dto;
 
-import java.io.Serializable;
-
-public class LivreDTO implements Serializable {
+public class LivreDTO {
 
 	private Long id;
 	
 	private String titre;
-
+	
+	private AuteurDTO auteur;
+	
+	private String genre;
+	
+	private int nbreExemplaires;
+	
 	public LivreDTO() {
-		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Long getId() {
@@ -27,5 +30,29 @@ public class LivreDTO implements Serializable {
 
 	public void setTitre(String titre) {
 		this.titre = titre;
+	}
+
+	public AuteurDTO getAuteur() {
+		return auteur;
+	}
+
+	public void setAuteur(AuteurDTO auteur) {
+		this.auteur = auteur;
+	}
+
+	public String getGenre() {
+		return genre;
+	}
+
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
+
+	public int getNbreExemplaires() {
+		return nbreExemplaires;
+	}
+
+	public void setNbreExemplaires(int nbreExemplaires) {
+		this.nbreExemplaires = nbreExemplaires;
 	}
 }

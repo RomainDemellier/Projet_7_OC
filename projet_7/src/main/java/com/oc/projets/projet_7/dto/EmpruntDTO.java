@@ -7,7 +7,7 @@ public class EmpruntDTO implements Serializable {
 
 	private Long id;
 	
-	private LivreDTO livre;
+	private LivreEmpruntDTO livre;
 	
 	private Date dateEmprunt;
 	
@@ -23,11 +23,11 @@ public class EmpruntDTO implements Serializable {
 		this.id = id;
 	}
 
-	public LivreDTO getLivre() {
+	public LivreEmpruntDTO getLivre() {
 		return livre;
 	}
 
-	public void setLivre(LivreDTO livre) {
+	public void setLivre(LivreEmpruntDTO livre) {
 		this.livre = livre;
 	}
 

@@ -1,6 +1,7 @@
 package com.oc.projets.projet_7.restController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.oc.projets.projet_7.conversion.ConversionLivre;
+import com.oc.projets.projet_7.dto.LivreDTO;
 import com.oc.projets.projet_7.entity.Auteur;
 import com.oc.projets.projet_7.entity.Livre;
 import com.oc.projets.projet_7.service.AuteurService;
@@ -25,16 +28,20 @@ public class LivreController {
 	@Autowired
 	private AuteurService auteurService;
 	
+	@Autowired
+	private ConversionLivre conversionLivre;
+	
 	/* Retourne la liste de tous les livres */
 	@GetMapping("/allLivres")
-	public List<Livre> getAll(){
-		return this.livreService.getAllLivres();
+	public List<LivreDTO> getAll(){
+		return this.livreService.getAllLivres().stream().map(livre -> this.conversionLivre.convertToDto(livre)).collect(Collectors.toList());
 	}
 	
 	/* Retourne un livre en fonction de son id */
 	@GetMapping("/livre/{id}")
-	public Livre getById(@PathVariable(value = "id") Long livreId) {
-		return this.livreService.findById(livreId);
+	public LivreDTO getById(@PathVariable(value = "id") Long livreId) {
+		Livre livre = this.livreService.findById(livreId);
+		return this.conversionLivre.convertToDto(livre);
 	}
 	
 	/* Créer un livre */
