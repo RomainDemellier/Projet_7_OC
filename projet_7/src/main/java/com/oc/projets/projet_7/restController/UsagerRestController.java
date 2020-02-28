@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.oc.projets.projet_7.conversion.ConversionEmprunt;
 import com.oc.projets.projet_7.conversion.ConversionUsager;
+import com.oc.projets.projet_7.dto.EmpruntDTO;
 import com.oc.projets.projet_7.dto.UsagerDTO;
 import com.oc.projets.projet_7.dto.UsagerGetDTO;
 import com.oc.projets.projet_7.entity.Emprunt;
@@ -33,18 +35,24 @@ public class UsagerRestController {
 	@Autowired
 	private ConversionUsager conversionUsager;
 	
+	@Autowired
+	private ConversionEmprunt conversionEmprunt;
+	
+	/* Retourne la liste de tous les usagers */
 	@GetMapping("/allUsagers")
 	public List<UsagerGetDTO> getAllUsagers(){
 		List<Usager> usagers = this.usagerService.getAll();
 		return usagers.stream().map(usager -> this.conversionUsager.convertToGetDTO(usager)).collect(Collectors.toList());
 	}
 	
+	/* Retourne un usager en fonction de son id */
 	@GetMapping("/usager/{id}")
 	public UsagerGetDTO findById(@PathVariable(value = "id") Long usagerId) {
 		Usager usager = this.usagerService.findById(usagerId);
 		return this.conversionUsager.convertToGetDTO(usager);
 	}
 	
+	/* Créer un usager */
 	@PostMapping("/usager")
 	public UsagerDTO createUsager(@RequestBody UsagerDTO usagerDTO) {
 		Usager usager = this.conversionUsager.convertToEntity(usagerDTO);
@@ -57,15 +65,20 @@ public class UsagerRestController {
 		return this.conversionUsager.convertToDto(usager);
 	}
 	
+	/* Retourne la liste des emprunts d'un usager avec l'id de l'usager */
 	@GetMapping("/emprunts/{id}")
-	public List<Emprunt> getEmprunts(@PathVariable(value = "id") Long usagerId){
+	public List<EmpruntDTO> getEmprunts(@PathVariable(value = "id") Long usagerId){
 		Usager usager = this.usagerService.findById(usagerId);
-		return usager.getListEmprunts();
+		return usager.getListEmprunts().stream().map(emprunt -> this.conversionEmprunt.convertToDto(emprunt)).collect(Collectors.toList());
 	}
 	
+	/* Retourne un emprunt en fonction de son id */
 	@GetMapping("/emprunt/{id}")
-	public Emprunt getEmprunt(@PathVariable(value = "id") Long empruntId) {
-		return this.empruntService.findById(empruntId);
+	public EmpruntDTO getEmprunt(@PathVariable(value = "id") Long empruntId) {
+		
+		Emprunt emprunt = this.empruntService.findById(empruntId);
+		return this.conversionEmprunt.convertToDto(emprunt);
+		//return this.empruntService.findById(empruntId);
 	}
 	
 	@GetMapping("/authenticated/hello")

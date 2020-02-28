@@ -29,6 +29,9 @@ public class EmpruntController {
 	@Autowired
 	private LivreService livreService;
 	
+	/* Action d'emprunter un livre pour un usager avec l'id de l'usager et l'id du livre 
+	 * On décrémente le nombre d'exemplaires du livre et on save le livre
+	 * */
 	@PostMapping("/emprunt/usager/{usagerId}/livre/{livreId}")
 	public Usager emprunter(@PathVariable(value = "usagerId") Long usagerId, @PathVariable(value = "livreId") Long livreId) {
 		Usager usager = this.usagerService.findById(usagerId);
@@ -46,6 +49,8 @@ public class EmpruntController {
 		return usager;
 	}
 	
+	/* Action de rendre un livre pour un usager avec l'id de l'usager et l'id du livre
+	 */
 	@DeleteMapping("/emprunt/usager/{usagerId}/livre/{livreId}")
 	public Usager rendre(@PathVariable(value = "usagerId") Long usagerId, @PathVariable(value = "livreId") Long livreId) {
 		Usager usager = this.usagerService.findById(usagerId);

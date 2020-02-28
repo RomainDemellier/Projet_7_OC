@@ -25,22 +25,25 @@ public class LivreController {
 	@Autowired
 	private AuteurService auteurService;
 	
-	
+	/* Retourne la liste de tous les livres */
 	@GetMapping("/allLivres")
 	public List<Livre> getAll(){
 		return this.livreService.getAllLivres();
 	}
 	
+	/* Retourne un livre en fonction de son id */
 	@GetMapping("/livre/{id}")
 	public Livre getById(@PathVariable(value = "id") Long livreId) {
 		return this.livreService.findById(livreId);
 	}
 	
+	/* Créer un livre */
 	@PostMapping("/livre")
 	public Livre createLivre(@RequestBody Livre livre) {
 		return this.livreService.createLivre(livre);
 	}
 	
+	/* Créer un auteur */
 	@PostMapping("/auteur")
 	public Auteur createAuteur(@RequestBody Auteur auteur) {
 		return this.auteurService.createAuteur(auteur);
