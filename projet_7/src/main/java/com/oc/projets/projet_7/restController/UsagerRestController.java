@@ -39,37 +39,41 @@ public class UsagerRestController {
 	private ConversionEmprunt conversionEmprunt;
 	
 	/* Retourne la liste de tous les usagers */
-	@GetMapping("/allUsagers")
+	@GetMapping("/usager")
 	public List<UsagerGetDTO> getAllUsagers(){
-		List<Usager> usagers = this.usagerService.getAll();
-		return usagers.stream().map(usager -> this.conversionUsager.convertToGetDTO(usager)).collect(Collectors.toList());
+//		List<Usager> usagers = this.usagerService.getAll();
+//		return usagers.stream().map(usager -> this.conversionUsager.convertToGetDTO(usager)).collect(Collectors.toList());
+		return this.usagerService.getAll();
 	}
 	
 	/* Retourne un usager en fonction de son id */
 	@GetMapping("/usager/{id}")
 	public UsagerGetDTO findById(@PathVariable(value = "id") Long usagerId) {
-		Usager usager = this.usagerService.findById(usagerId);
-		return this.conversionUsager.convertToGetDTO(usager);
+//		Usager usager = this.usagerService.findById(usagerId);
+//		return this.conversionUsager.convertToGetDTO(usager);
+		return this.usagerService.getUsager(usagerId);
 	}
 	
 	/* Créer un usager */
-	@PostMapping("/usager")
+	@PostMapping("/usager/create")
 	public UsagerDTO createUsager(@RequestBody UsagerDTO usagerDTO) {
-		Usager usager = this.conversionUsager.convertToEntity(usagerDTO);
+		//Usager usager = this.conversionUsager.convertToEntity(usagerDTO);
 		try{
-			usager = this.usagerService.createUsager(usager);
+			usagerDTO = this.usagerService.createUsager(usagerDTO);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 		
-		return this.conversionUsager.convertToDto(usager);
+		//return this.conversionUsager.convertToDto(usager);
+		return usagerDTO;
 	}
 	
 	/* Retourne la liste des emprunts d'un usager avec l'id de l'usager */
-	@GetMapping("/emprunts/{id}")
+	@GetMapping("/usager/{id}/emprunts")
 	public List<EmpruntDTO> getEmprunts(@PathVariable(value = "id") Long usagerId){
-		Usager usager = this.usagerService.findById(usagerId);
-		return usager.getListEmprunts().stream().map(emprunt -> this.conversionEmprunt.convertToDto(emprunt)).collect(Collectors.toList());
+//		Usager usager = this.usagerService.findById(usagerId);
+//		return usager.getListEmprunts().stream().map(emprunt -> this.conversionEmprunt.convertToDto(emprunt)).collect(Collectors.toList());
+		return this.usagerService.getEmprunts(usagerId);
 	}
 	
 	/* Retourne un emprunt en fonction de son id */

@@ -2,17 +2,26 @@ package com.oc.projets.projet_7.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.oc.projets.projet_7.conversion.ConversionEmprunt;
+import com.oc.projets.projet_7.conversion.ConversionLivre;
+import com.oc.projets.projet_7.conversion.ConversionUsager;
+import com.oc.projets.projet_7.dto.EmpruntDTO;
+import com.oc.projets.projet_7.dto.LivreDTO;
+import com.oc.projets.projet_7.dto.UsagerDTO;
+import com.oc.projets.projet_7.dto.UsagerGetDTO;
 import com.oc.projets.projet_7.entity.Emprunt;
 import com.oc.projets.projet_7.entity.Livre;
 import com.oc.projets.projet_7.entity.Usager;
 import com.oc.projets.projet_7.exception.EmpruntException;
 import com.oc.projets.projet_7.exception.PasswordException;
 import com.oc.projets.projet_7.exception.ResourceNotFoundException;
+import com.oc.projets.projet_7.repository.EmpruntRepository;
 import com.oc.projets.projet_7.repository.UsagerRepository;
 
 
@@ -22,7 +31,21 @@ public class UsagerService {
 	@Autowired
 	private UsagerRepository usagerRepository;
 	
-	public Usager createUsager(Usager usager) throws PasswordException {
+	@Autowired
+	private EmpruntRepository empruntRepository;
+	
+	@Autowired
+	private ConversionUsager conversionUsager;
+	
+	@Autowired
+	private ConversionLivre conversionLivre;
+	
+	@Autowired
+	private ConversionEmprunt conversionEmprunt;
+	
+	public UsagerDTO createUsager(UsagerDTO usagerDTO) throws PasswordException {
+		
+		Usager usager = this.conversionUsager.convertToEntity(usagerDTO);
 		
 		String password = usager.getPassword();
 		
@@ -35,7 +58,9 @@ public class UsagerService {
 		System.out.println("encodePwd : " + encodePwd);
 		usager.setPassword(encodePwd);
 		
-		return this.usagerRepository.save(usager);
+		this.usagerRepository.save(usager);
+		
+		return this.conversionUsager.convertToDto(usager);
 	}
 	
 	public Usager editUsager(Usager usager) {
@@ -46,11 +71,26 @@ public class UsagerService {
 		return this.usagerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usager","id",id));
 	}
 	
-	public List<Usager> getAll(){
-		return this.usagerRepository.findAll();
+	public UsagerGetDTO getUsager(Long id) {
+		Usager usager = this.findById(id);
+		return this.conversionUsager.convertToGetDTO(usager);
 	}
 	
-	public Usager emprunter(Usager usager, Livre livre) throws EmpruntException {
+	public List<UsagerGetDTO> getAll(){
+		List<Usager> usagers = this.usagerRepository.findAll();
+		return usagers.stream().map(usager -> this.conversionUsager.convertToGetDTO(usager)).collect(Collectors.toList());
+	}
+	
+	public List<EmpruntDTO> getEmprunts(Long id){
+		Usager usager = this.findById(id);
+		return usager.getListEmprunts().stream().map(emprunt -> this.conversionEmprunt.convertToDto(emprunt)).collect(Collectors.toList());
+	}
+	
+	public EmpruntDTO emprunter(Usager usager, Livre livre) throws EmpruntException {
+		
+//		Usager usager = this.findById(usagerGetDTO.getId());
+//		
+//		Livre livre = this.conversionLivre.convertToEntity(livreDTO);
 		
 		if(livre.getNbreExemplaires() <= 0) {
 			throw new EmpruntException("Ce livre n'est pas disponible pour le moment.");
@@ -71,12 +111,14 @@ public class UsagerService {
 		
 		Date date = new Date();
 		emprunt.setDateEmprunt(date);
+		//this.empruntRepository.save(emprunt);
 		
 		usager.addEmprunt(emprunt);
 		
 		this.editUsager(usager);
+		System.out.println("id emprunt : " + emprunt.getId());
 		
-		return usager;
+		return this.conversionEmprunt.convertToDto(emprunt);
 	}
 	
 	public Usager rendre(Usager usager, Livre livre) {

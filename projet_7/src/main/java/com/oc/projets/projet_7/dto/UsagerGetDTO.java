@@ -1,6 +1,10 @@
 package com.oc.projets.projet_7.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.oc.projets.projet_7.entity.Emprunt;
 
 public class UsagerGetDTO implements Serializable {
 
@@ -11,9 +15,23 @@ public class UsagerGetDTO implements Serializable {
 	private String prenom;
 	
 	private String email;
+	
+//	private List<Emprunt> listEmprunts;
 
 	public UsagerGetDTO() {
 	}
+	
+	
+
+	public UsagerGetDTO(Long id, String nom, String prenom, String email) {
+	super();
+	this.id = id;
+	this.nom = nom;
+	this.prenom = prenom;
+	this.email = email;
+}
+
+
 
 	public Long getId() {
 		return id;
@@ -45,5 +63,13 @@ public class UsagerGetDTO implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}	
+	}
+
+//	public List<Emprunt> getListEmprunts() {
+//		return listEmprunts;
+//	}
+//
+//	public void setListEmprunts(List<Emprunt> listEmprunts) {
+//		this.listEmprunts = listEmprunts;
+//	}
 }

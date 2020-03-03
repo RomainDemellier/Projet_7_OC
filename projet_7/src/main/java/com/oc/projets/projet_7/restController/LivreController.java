@@ -32,26 +32,27 @@ public class LivreController {
 	private ConversionLivre conversionLivre;
 	
 	/* Retourne la liste de tous les livres */
-	@GetMapping("/allLivres")
+	@GetMapping("/livre")
 	public List<LivreDTO> getAll(){
-		return this.livreService.getAllLivres().stream().map(livre -> this.conversionLivre.convertToDto(livre)).collect(Collectors.toList());
+		return this.livreService.getAllLivres();
 	}
 	
 	/* Retourne un livre en fonction de son id */
 	@GetMapping("/livre/{id}")
 	public LivreDTO getById(@PathVariable(value = "id") Long livreId) {
-		Livre livre = this.livreService.findById(livreId);
-		return this.conversionLivre.convertToDto(livre);
+//		Livre livre = this.livreService.findById(livreId);
+//		return this.conversionLivre.convertToDto(livre);
+		return this.livreService.getLivre(livreId);
 	}
 	
 	/* Créer un livre */
-	@PostMapping("/livre")
+	@PostMapping("/livre/create")
 	public Livre createLivre(@RequestBody Livre livre) {
 		return this.livreService.createLivre(livre);
 	}
 	
 	/* Créer un auteur */
-	@PostMapping("/auteur")
+	@PostMapping("/auteur/create")
 	public Auteur createAuteur(@RequestBody Auteur auteur) {
 		return this.auteurService.createAuteur(auteur);
 	}
