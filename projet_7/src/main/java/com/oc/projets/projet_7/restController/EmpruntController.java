@@ -26,7 +26,6 @@ import com.oc.projets.projet_7.entity.Usager;
 import com.oc.projets.projet_7.service.EmpruntService;
 import com.oc.projets.projet_7.service.LivreService;
 import com.oc.projets.projet_7.service.UsagerService;
-import com.oc.projets.projet_7.wrapper.RequestEmprunterWrapper;
 
 import net.bytebuddy.asm.Advice.This;
 
