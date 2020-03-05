@@ -50,9 +50,9 @@ public class Usager implements Serializable {
 	//@Size(min = 8, max = 16, message = "Le password doit être compris entre 8 et 16 caractères.")
 	private String password;
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "usager_id")
-	private List<Emprunt> listEmprunts = new ArrayList<Emprunt>();
+//	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+//	@JoinColumn(name = "usager_id")
+//	private List<Emprunt> listEmprunts = new ArrayList<Emprunt>();
 
 	public Usager() {
 		super();
@@ -105,19 +105,19 @@ public class Usager implements Serializable {
 		this.password = password;
 	}
 
-	public List<Emprunt> getListEmprunts() {
-		return listEmprunts;
-	}
-
-	public void setListEmprunts(List<Emprunt> listEmprunts) {
-		this.listEmprunts = listEmprunts;
-	}
-	
-	public void addEmprunt(Emprunt emprunt) {
-		this.listEmprunts.add(emprunt);
-	}
-	
-	public void deleteEmprunt(Emprunt emprunt) {
-		this.listEmprunts.remove(emprunt);
-	}
+//	public List<Emprunt> getListEmprunts() {
+//		return listEmprunts;
+//	}
+//
+//	public void setListEmprunts(List<Emprunt> listEmprunts) {
+//		this.listEmprunts = listEmprunts;
+//	}
+//	
+//	public void addEmprunt(Emprunt emprunt) {
+//		this.listEmprunts.add(emprunt);
+//	}
+//	
+//	public void deleteEmprunt(Emprunt emprunt) {
+//		this.listEmprunts.remove(emprunt);
+//	}
 }

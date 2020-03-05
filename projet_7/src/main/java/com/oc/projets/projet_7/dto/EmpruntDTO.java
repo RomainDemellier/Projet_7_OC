@@ -9,6 +9,8 @@ public class EmpruntDTO implements Serializable {
 	
 	private LivreEmpruntDTO livre;
 	
+	private UsagerGetDTO usager;
+	
 	private Date dateEmprunt;
 	
 	public EmpruntDTO() {
@@ -31,6 +33,14 @@ public class EmpruntDTO implements Serializable {
 		this.livre = livre;
 	}
 
+	public UsagerGetDTO getUsager() {
+		return usager;
+	}
+
+	public void setUsager(UsagerGetDTO usagerGetDTO) {
+		this.usager = usagerGetDTO;
+	}
+
 	public Date getDateEmprunt() {
 		return dateEmprunt;
 	}
@@ -38,4 +48,11 @@ public class EmpruntDTO implements Serializable {
 	public void setDateEmprunt(Date dateEmprunt) {
 		this.dateEmprunt = dateEmprunt;
 	}
+
+	@Override
+	public String toString() {
+		return "EmpruntDTO [id=" + id + ", livre=" + livre + ", usager=" + usager + ", dateEmprunt=" + dateEmprunt
+				+ "]";
+	}
+	
 }

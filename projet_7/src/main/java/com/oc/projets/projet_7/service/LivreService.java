@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.oc.projets.projet_7.conversion.ConversionLivre;
 import com.oc.projets.projet_7.dto.LivreDTO;
 import com.oc.projets.projet_7.entity.Livre;
+import com.oc.projets.projet_7.exception.EmpruntException;
 import com.oc.projets.projet_7.exception.ResourceNotFoundException;
 import com.oc.projets.projet_7.repository.LivreRepository;
 
@@ -42,5 +43,24 @@ public class LivreService {
 	public Livre findById(Long livreId) {
 		return this.livreRepository.findById(livreId).orElseThrow(() -> new ResourceNotFoundException("Livre", "id", livreId));
 				
+	}
+	
+	public void estDisponible(Long livreId) throws EmpruntException {
+		Livre livre = this.findById(livreId);
+		int nbreExemplaires = livre.getNbreExemplaires();
+		System.out.println("nbreExemplaires : " + nbreExemplaires);
+		if(nbreExemplaires <= 0) {
+			throw new EmpruntException("Ce livre n'est pas disponible pour le moment.");
+		} else {
+			livre.setNbreExemplaires(nbreExemplaires - 1);
+			this.editLivre(livre);
+		}
+	}
+	
+	public void rendre(Livre livre) {
+		//Livre livre = this.findById(livreId);
+		int nbreExemplaires = livre.getNbreExemplaires();
+		livre.setNbreExemplaires(nbreExemplaires + 1);
+		this.editLivre(livre);
 	}
 }

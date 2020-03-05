@@ -68,22 +68,28 @@ public class UsagerRestController {
 		return usagerDTO;
 	}
 	
-	/* Retourne la liste des emprunts d'un usager avec l'id de l'usager */
 	@GetMapping("/usager/{id}/emprunts")
 	public List<EmpruntDTO> getEmprunts(@PathVariable(value = "id") Long usagerId){
-//		Usager usager = this.usagerService.findById(usagerId);
-//		return usager.getListEmprunts().stream().map(emprunt -> this.conversionEmprunt.convertToDto(emprunt)).collect(Collectors.toList());
-		return this.usagerService.getEmprunts(usagerId);
+		Usager usager = this.usagerService.findById(usagerId);
+		return this.empruntService.getEmprunts(usager);
 	}
 	
-	/* Retourne un emprunt en fonction de son id */
-	@GetMapping("/emprunt/{id}")
-	public EmpruntDTO getEmprunt(@PathVariable(value = "id") Long empruntId) {
-		
-		Emprunt emprunt = this.empruntService.findById(empruntId);
-		return this.conversionEmprunt.convertToDto(emprunt);
-		//return this.empruntService.findById(empruntId);
-	}
+	/* Retourne la liste des emprunts d'un usager avec l'id de l'usager */
+//	@GetMapping("/usager/{id}/emprunts")
+//	public List<EmpruntDTO> getEmprunts(@PathVariable(value = "id") Long usagerId){
+////		Usager usager = this.usagerService.findById(usagerId);
+////		return usager.getListEmprunts().stream().map(emprunt -> this.conversionEmprunt.convertToDto(emprunt)).collect(Collectors.toList());
+//		return this.usagerService.getEmprunts(usagerId);
+//	}
+//	
+//	/* Retourne un emprunt en fonction de son id */
+//	@GetMapping("/emprunt/{id}")
+//	public EmpruntDTO getEmprunt(@PathVariable(value = "id") Long empruntId) {
+//		
+//		Emprunt emprunt = this.empruntService.findById(empruntId);
+//		return this.conversionEmprunt.convertToDto(emprunt);
+//		//return this.empruntService.findById(empruntId);
+//	}
 	
 	@GetMapping("/authenticated/hello")
 	public String authenticatedHello() {

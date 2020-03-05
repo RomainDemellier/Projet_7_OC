@@ -3,12 +3,15 @@ package com.oc.projets.projet_7.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -26,7 +29,13 @@ public class Emprunt implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@ManyToOne
+	//@JoinColumn(name = "livre_id")
 	private Livre livre;
+	
+	@ManyToOne
+	//@JoinColumn(name = "usager_id")
+	private Usager usager;
 	
 	@Column(name="date_emprunt")
 	private Date dateEmprunt;
@@ -52,6 +61,14 @@ public class Emprunt implements Serializable {
 		this.livre = livre;
 	}
 
+	public Usager getUsager() {
+		return usager;
+	}
+
+	public void setUsager(Usager usager) {
+		this.usager = usager;
+	}
+
 	public Date getDateEmprunt() {
 		return dateEmprunt;
 	}
@@ -59,6 +76,9 @@ public class Emprunt implements Serializable {
 	public void setDateEmprunt(Date dateEmprunt) {
 		this.dateEmprunt = dateEmprunt;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "Emprunt [id=" + id + ", livre=" + livre + ", usager=" + usager + ", dateEmprunt=" + dateEmprunt + "]";
+	}
 }

@@ -81,60 +81,55 @@ public class UsagerService {
 		return usagers.stream().map(usager -> this.conversionUsager.convertToGetDTO(usager)).collect(Collectors.toList());
 	}
 	
-	public List<EmpruntDTO> getEmprunts(Long id){
-		Usager usager = this.findById(id);
-		return usager.getListEmprunts().stream().map(emprunt -> this.conversionEmprunt.convertToDto(emprunt)).collect(Collectors.toList());
-	}
+//	public List<EmpruntDTO> getEmprunts(Long id){
+//		Usager usager = this.findById(id);
+//	}
 	
-	public EmpruntDTO emprunter(Usager usager, Livre livre) throws EmpruntException {
-		
-//		Usager usager = this.findById(usagerGetDTO.getId());
+//	public EmpruntDTO emprunter(Usager usager, Livre livre) throws EmpruntException {
 //		
-//		Livre livre = this.conversionLivre.convertToEntity(livreDTO);
-		
-		if(livre.getNbreExemplaires() <= 0) {
-			throw new EmpruntException("Ce livre n'est pas disponible pour le moment.");
-		}
-		
-		List<Emprunt> emprunts = usager.getListEmprunts();
-		
-		for(int i = 0;i < emprunts.size();i++) {
-			if(emprunts.get(i).getLivre().getId().equals(livre.getId())) {
-				throw new EmpruntException("Vous avez déjà emprunter ce livre.");
-			}
-		}
-		
-		livre.setNbreExemplaires(livre.getNbreExemplaires() - 1);
-		
-		Emprunt emprunt = new Emprunt();
-		emprunt.setLivre(livre);
-		
-		Date date = new Date();
-		emprunt.setDateEmprunt(date);
-		//this.empruntRepository.save(emprunt);
-		
-		usager.addEmprunt(emprunt);
-		
-		this.editUsager(usager);
-		System.out.println("id emprunt : " + emprunt.getId());
-		
-		return this.conversionEmprunt.convertToDto(emprunt);
-	}
+//		
+//		if(livre.getNbreExemplaires() <= 0) {
+//			throw new EmpruntException("Ce livre n'est pas disponible pour le moment.");
+//		}
+//		
+//		List<Emprunt> emprunts = usager.getListEmprunts();
+//		
+//		for(int i = 0;i < emprunts.size();i++) {
+//			if(emprunts.get(i).getLivre().getId().equals(livre.getId())) {
+//				throw new EmpruntException("Vous avez déjà emprunter ce livre.");
+//			}
+//		}
+//		
+//		livre.setNbreExemplaires(livre.getNbreExemplaires() - 1);
+//		
+//		Emprunt emprunt = new Emprunt();
+//		emprunt.setLivre(livre);
+//		
+//		Date date = new Date();
+//		emprunt.setDateEmprunt(date);
+//		
+//		usager.addEmprunt(emprunt);
+//		
+//		this.editUsager(usager);
+//		System.out.println("id emprunt : " + emprunt.getId());
+//		
+//		return this.conversionEmprunt.convertToDto(emprunt);
+//	}
 	
-	public Usager rendre(Usager usager, Livre livre) {
-		
-		List<Emprunt> emprunts = usager.getListEmprunts();
-		
-		for(int i = 0;i < emprunts.size();i++) {
-			if(emprunts.get(i).getLivre().getId().equals(livre.getId())) {
-				usager.deleteEmprunt(emprunts.get(i));
-				livre.setNbreExemplaires(livre.getNbreExemplaires() + 1);
-				break;
-			}
-		}
-		
-		this.editUsager(usager);
-		
-		return usager;
-	}
+//	public Usager rendre(Usager usager, Livre livre) {
+//		
+//		List<Emprunt> emprunts = usager.getListEmprunts();
+//		
+//		for(int i = 0;i < emprunts.size();i++) {
+//			if(emprunts.get(i).getLivre().getId().equals(livre.getId())) {
+//				usager.deleteEmprunt(emprunts.get(i));
+//				livre.setNbreExemplaires(livre.getNbreExemplaires() + 1);
+//				break;
+//			}
+//		}
+//		
+//		this.editUsager(usager);
+//		
+//		return usager;
+//	}
 }
