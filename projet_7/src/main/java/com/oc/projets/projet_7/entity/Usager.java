@@ -50,6 +50,9 @@ public class Usager implements Serializable {
 	//@Size(min = 8, max = 16, message = "Le password doit être compris entre 8 et 16 caractères.")
 	private String password;
 	
+	@NotBlank
+	private String role = "USER";
+	
 //	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 //	@JoinColumn(name = "usager_id")
 //	private List<Emprunt> listEmprunts = new ArrayList<Emprunt>();
@@ -105,6 +108,14 @@ public class Usager implements Serializable {
 		this.password = password;
 	}
 
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+	
 //	public List<Emprunt> getListEmprunts() {
 //		return listEmprunts;
 //	}

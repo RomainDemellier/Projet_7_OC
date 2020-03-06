@@ -27,7 +27,6 @@ import com.oc.projets.projet_7.service.EmpruntService;
 import com.oc.projets.projet_7.service.LivreService;
 import com.oc.projets.projet_7.service.UsagerService;
 
-import net.bytebuddy.asm.Advice.This;
 
 @RestController
 @RequestMapping("/api")

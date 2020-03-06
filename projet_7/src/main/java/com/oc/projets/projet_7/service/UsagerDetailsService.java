@@ -1,7 +1,11 @@
 package com.oc.projets.projet_7.service;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,7 +15,7 @@ import com.oc.projets.projet_7.entity.Usager;
 import com.oc.projets.projet_7.repository.UsagerRepository;
 
 @Service
-public class UsagerDetailsSevice implements UserDetailsService {
+public class UsagerDetailsService implements UserDetailsService {
 
 	@Autowired
 	private UsagerRepository usagerRepository;
@@ -21,9 +25,9 @@ public class UsagerDetailsSevice implements UserDetailsService {
 		// TODO Auto-generated method stub
 		Usager usager = this.usagerRepository.findByEmail(email);
 		
-		GrantedAuthority authority = null;
+		GrantedAuthority authority = new SimpleGrantedAuthority(usager.getRole());;
 		
-		UserDetails userDetails = (UserDetails) new Usager(usager.getEmail(),usager.getPassword());
+		UserDetails userDetails = (UserDetails) new User(usager.getEmail(),usager.getPassword(), Arrays.asList(authority));
 		
 		return userDetails;
 	}

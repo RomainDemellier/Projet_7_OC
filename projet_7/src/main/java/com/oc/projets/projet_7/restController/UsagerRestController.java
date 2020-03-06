@@ -96,6 +96,11 @@ public class UsagerRestController {
 		return "Authenticated Hello World !";
 	}
 	
+	@GetMapping("/admin/hello")
+	public String adminHello() {
+		return "Admin Hello World !";
+	}
+	
 	@GetMapping("/hello")
 	public String hello() {
 		return "Non Authenticated Hello World !";

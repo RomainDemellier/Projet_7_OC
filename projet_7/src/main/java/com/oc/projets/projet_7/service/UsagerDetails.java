@@ -4,9 +4,11 @@ import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 import com.oc.projets.projet_7.entity.Usager;
 
+@Service
 public class UsagerDetails implements UserDetails {
 
 	private Usager usager;

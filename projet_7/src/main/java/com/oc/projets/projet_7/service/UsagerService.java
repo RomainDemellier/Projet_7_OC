@@ -58,6 +58,8 @@ public class UsagerService {
 		System.out.println("encodePwd : " + encodePwd);
 		usager.setPassword(encodePwd);
 		
+		usager.setRole("USER");
+		
 		this.usagerRepository.save(usager);
 		
 		return this.conversionUsager.convertToDto(usager);
@@ -69,6 +71,10 @@ public class UsagerService {
 	
 	public Usager findById(Long id) {
 		return this.usagerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usager","id",id));
+	}
+	
+	public Usager findByEmail(String email) {
+		return this.usagerRepository.findByEmail(email);
 	}
 	
 	public UsagerGetDTO getUsager(Long id) {
