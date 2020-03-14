@@ -12,4 +12,6 @@ import com.oc.projets.projet_7.entity.Usager;
 public interface EmpruntRepository extends JpaRepository<Emprunt, Long> {
 
 	List<Emprunt> findByUsager(Usager usager);
+	
+	List<Emprunt> findByUsagerAndActif(Usager usager, Boolean actif);
 }

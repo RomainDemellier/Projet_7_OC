@@ -44,6 +44,17 @@ public class EmpruntController {
 	/* Action d'emprunter un livre pour un usager avec l'id de l'usager et l'id du livre 
 	 * On décrémente le nombre d'exemplaires du livre et on save le livre
 	 * */
+	
+	@GetMapping("/emprunt/{id}")
+	public EmpruntDTO getEmprunt(@PathVariable(value = "id") Long empruntId) {
+		return this.empruntService.getById(empruntId);
+	}
+	
+	@GetMapping("/emprunt")
+	public List<EmpruntDTO> getListEmprunts(){
+		return this.empruntService.getListEmprunts();
+	}
+	
 	@PostMapping("/emprunt/create")
 	public EmpruntDTO emprunter(@RequestBody EmpruntDTO empruntDTO) {
 		
@@ -64,7 +75,7 @@ public class EmpruntController {
 	public void rendre(@PathVariable(value = "id") Long empruntId) {
 		Emprunt emprunt = this.empruntService.findById(empruntId);
 		this.livreService.rendre(emprunt.getLivre());
-		this.empruntService.delete(empruntId);
+		this.empruntService.delete(emprunt);
 	}
 	/* Action de rendre un livre pour un usager avec l'id de l'usager et l'id du livre
 	 */

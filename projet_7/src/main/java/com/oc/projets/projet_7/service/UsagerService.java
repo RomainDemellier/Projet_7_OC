@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -86,6 +88,47 @@ public class UsagerService {
 		List<Usager> usagers = this.usagerRepository.findAll();
 		return usagers.stream().map(usager -> this.conversionUsager.convertToGetDTO(usager)).collect(Collectors.toList());
 	}
+	
+	public UsagerDTO getUsagerDTOConnecte() {
+		return this.conversionUsager.convertToDto(this.authentification());
+	}
+	
+//	public List<EmpruntDTO> getEmprunts(){
+//		Usager usager = this.authentification();
+//		List<Emprunt> emprunts = usager.getListEmprunts();
+//		return emprunts.stream().map(emprunt -> this.conversionEmprunt.convertToDto(emprunt)).collect(Collectors.toList());
+//	}
+	
+//	public EmpruntDTO emprunter(EmpruntDTO empruntDTO) {
+//		Usager usager = this.authentification();
+//		Emprunt emprunt = this.conversionEmprunt.convertToEntity(empruntDTO);
+//		Date date = new Date();
+//		emprunt.setDateEmprunt(date);
+//		usager.addEmprunt(emprunt);
+//		this.editUsager(usager);
+//		return this.conversionEmprunt.convertToDto(emprunt);
+//	}
+	
+//	public void dejaEnpossession(EmpruntDTO empruntDTO) throws EmpruntException {
+//		Usager usager = this.authentification();
+//		Long livreId = empruntDTO.getLivre().getId();
+//		List<Emprunt> emprunts = usager.getListEmprunts();
+//		
+//		for(int i = 0;i < emprunts.size();i++) {
+//			if(emprunts.get(i).getLivre().getId().equals(livreId)) {
+//				throw new EmpruntException("Vous êtes déjà en possession de ce livre.");
+//			}
+//		}
+//	}
+	
+    public Usager authentification() {
+    	
+		UserDetails user =  (UserDetails) SecurityContextHolder
+				.getContext().getAuthentication().getPrincipal();
+		
+		Usager usager = this.findByEmail(user.getUsername());
+		return usager;
+    }
 	
 //	public List<EmpruntDTO> getEmprunts(Long id){
 //		Usager usager = this.findById(id);

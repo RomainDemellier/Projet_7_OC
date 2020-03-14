@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +17,7 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -30,15 +32,17 @@ public class Emprunt implements Serializable {
 	private Long id;
 	
 	@ManyToOne
-	//@JoinColumn(name = "livre_id")
+	@JoinColumn(name = "livre_id", nullable = false)
 	private Livre livre;
 	
-	@ManyToOne
-	//@JoinColumn(name = "usager_id")
+    @ManyToOne
+    @JoinColumn(name = "usager_id", nullable = false)
 	private Usager usager;
 	
 	@Column(name="date_emprunt")
 	private Date dateEmprunt;
+	
+	private Boolean actif;
 
 	public Emprunt() {
 		super();
@@ -77,8 +81,17 @@ public class Emprunt implements Serializable {
 		this.dateEmprunt = dateEmprunt;
 	}
 
+	public Boolean getActif() {
+		return actif;
+	}
+
+	public void setActif(Boolean actif) {
+		this.actif = actif;
+	}
+
 	@Override
 	public String toString() {
-		return "Emprunt [id=" + id + ", livre=" + livre + ", usager=" + usager + ", dateEmprunt=" + dateEmprunt + "]";
+		return "Emprunt [id=" + id + ", livre=" + livre + ", usager=" + usager + ", dateEmprunt=" + dateEmprunt
+				+ ", actif=" + actif + "]";
 	}
 }

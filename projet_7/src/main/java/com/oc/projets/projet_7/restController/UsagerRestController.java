@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.method.P;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,9 +22,11 @@ import com.oc.projets.projet_7.dto.UsagerGetDTO;
 import com.oc.projets.projet_7.entity.Emprunt;
 import com.oc.projets.projet_7.entity.Usager;
 import com.oc.projets.projet_7.service.EmpruntService;
+import com.oc.projets.projet_7.service.UsagerDetails;
 import com.oc.projets.projet_7.service.UsagerService;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api")
 public class UsagerRestController {
 
@@ -68,10 +72,9 @@ public class UsagerRestController {
 		return usagerDTO;
 	}
 	
-	@GetMapping("/usager/{id}/emprunts")
-	public List<EmpruntDTO> getEmprunts(@PathVariable(value = "id") Long usagerId){
-		Usager usager = this.usagerService.findById(usagerId);
-		return this.empruntService.getEmprunts(usager);
+	@GetMapping("/usager/emprunts")
+	public List<EmpruntDTO> getEmprunts(){
+		return this.empruntService.getEmpruntsUsagerConnecte();
 	}
 	
 	/* Retourne la liste des emprunts d'un usager avec l'id de l'usager */
@@ -104,5 +107,10 @@ public class UsagerRestController {
 	@GetMapping("/hello")
 	public String hello() {
 		return "Non Authenticated Hello World !";
+	}
+	
+	@GetMapping("/usager/connecte")
+	public UsagerDTO getUsagerConnecte() {
+		return this.usagerService.getUsagerDTOConnecte();
 	}
 }

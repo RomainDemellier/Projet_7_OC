@@ -34,6 +34,7 @@ public class JwtAuthenticationController {
 	@Autowired
 	private UsagerDetailsService usagerDetailsService;
 	
+	//@CrossOrigin(origins = "http://localhost:4200/login")
 	@PostMapping("/authenticate")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 		System.out.println("Dans authentication.");

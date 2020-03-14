@@ -13,6 +13,8 @@ public class EmpruntDTO implements Serializable {
 	
 	private Date dateEmprunt;
 	
+	private Boolean actif;
+	
 	public EmpruntDTO() {
 		
 	}	
@@ -48,11 +50,18 @@ public class EmpruntDTO implements Serializable {
 	public void setDateEmprunt(Date dateEmprunt) {
 		this.dateEmprunt = dateEmprunt;
 	}
+	
+
+	public Boolean getActif() {
+		return actif;
+	}
+
+	public void setActif(Boolean actif) {
+		this.actif = actif;
+	}
 
 	@Override
 	public String toString() {
-		return "EmpruntDTO [id=" + id + ", livre=" + livre + ", usager=" + usager + ", dateEmprunt=" + dateEmprunt
-				+ "]";
+		return "EmpruntDTO [id=" + id + ", livre=" + livre + ", dateEmprunt=" + dateEmprunt + ", actif=" + actif + "]";
 	}
-	
 }

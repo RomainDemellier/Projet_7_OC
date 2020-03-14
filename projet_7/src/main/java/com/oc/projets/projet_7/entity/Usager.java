@@ -53,8 +53,7 @@ public class Usager implements Serializable {
 	@NotBlank
 	private String role = "USER";
 	
-//	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-//	@JoinColumn(name = "usager_id")
+//	@OneToMany(mappedBy = "usager", cascade = CascadeType.ALL, orphanRemoval = true)
 //	private List<Emprunt> listEmprunts = new ArrayList<Emprunt>();
 
 	public Usager() {
@@ -115,6 +114,12 @@ public class Usager implements Serializable {
 	public void setRole(String role) {
 		this.role = role;
 	}
+
+	@Override
+	public String toString() {
+		return "Usager [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", password="
+				+ password + ", role=" + role + "]";
+	}
 	
 //	public List<Emprunt> getListEmprunts() {
 //		return listEmprunts;
@@ -131,4 +136,5 @@ public class Usager implements Serializable {
 //	public void deleteEmprunt(Emprunt emprunt) {
 //		this.listEmprunts.remove(emprunt);
 //	}
+	
 }
