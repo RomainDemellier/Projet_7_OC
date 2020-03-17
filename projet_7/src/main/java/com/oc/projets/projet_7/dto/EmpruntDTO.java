@@ -13,6 +13,10 @@ public class EmpruntDTO implements Serializable {
 	
 	private Date dateEmprunt;
 	
+	private Date dateRetour;
+	
+	private Boolean prolonge;
+	
 	private Boolean actif;
 	
 	public EmpruntDTO() {
@@ -58,6 +62,22 @@ public class EmpruntDTO implements Serializable {
 
 	public void setActif(Boolean actif) {
 		this.actif = actif;
+	}
+
+	public Date getDateRetour() {
+		return dateRetour;
+	}
+
+	public Boolean getProlonge() {
+		return prolonge;
+	}
+
+	public void setDateRetour(Date dateRetour) {
+		this.dateRetour = dateRetour;
+	}
+
+	public void setProlonge(Boolean prolonge) {
+		this.prolonge = prolonge;
 	}
 
 	@Override

@@ -42,6 +42,11 @@ public class Emprunt implements Serializable {
 	@Column(name="date_emprunt")
 	private Date dateEmprunt;
 	
+	@Column(name = "date_retour")
+	private Date dateRetour;
+	
+	private Boolean prolonge;
+	
 	private Boolean actif;
 
 	public Emprunt() {
@@ -87,6 +92,22 @@ public class Emprunt implements Serializable {
 
 	public void setActif(Boolean actif) {
 		this.actif = actif;
+	}
+
+	public Date getDateRetour() {
+		return dateRetour;
+	}
+
+	public Boolean getProlonge() {
+		return prolonge;
+	}
+
+	public void setDateRetour(Date dateRetour) {
+		this.dateRetour = dateRetour;
+	}
+
+	public void setProlonge(Boolean prolonge) {
+		this.prolonge = prolonge;
 	}
 
 	@Override

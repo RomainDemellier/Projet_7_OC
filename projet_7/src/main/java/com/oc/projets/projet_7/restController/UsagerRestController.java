@@ -1,5 +1,7 @@
 package com.oc.projets.projet_7.restController;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +24,7 @@ import com.oc.projets.projet_7.dto.UsagerGetDTO;
 import com.oc.projets.projet_7.entity.Emprunt;
 import com.oc.projets.projet_7.entity.Usager;
 import com.oc.projets.projet_7.service.EmpruntService;
+import com.oc.projets.projet_7.service.UsagerConnecteService;
 import com.oc.projets.projet_7.service.UsagerDetails;
 import com.oc.projets.projet_7.service.UsagerService;
 
@@ -32,6 +35,9 @@ public class UsagerRestController {
 
 	@Autowired
 	private UsagerService usagerService;
+	
+	@Autowired
+	private UsagerConnecteService usagerConnecteService;
 	
 	@Autowired
 	private EmpruntService empruntService;
@@ -106,11 +112,21 @@ public class UsagerRestController {
 	
 	@GetMapping("/hello")
 	public String hello() {
+		Date date = new Date();
+		System.out.println("Date aujourd'hui : " + date);
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.DATE, 28);
+		
+		Date datePlus28days = calendar.getTime();
+		System.out.println("Date + 28 jours : " + datePlus28days);
+		
 		return "Non Authenticated Hello World !";
 	}
 	
 	@GetMapping("/usager/connecte")
-	public UsagerDTO getUsagerConnecte() {
-		return this.usagerService.getUsagerDTOConnecte();
+	public UsagerGetDTO getUsagerConnecte() {
+		return this.usagerConnecteService.getUsagerConnecte();
 	}
 }

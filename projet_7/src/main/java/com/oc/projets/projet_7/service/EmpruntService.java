@@ -1,5 +1,6 @@
 package com.oc.projets.projet_7.service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,8 +23,11 @@ public class EmpruntService {
 	@Autowired
 	private EmpruntRepository empruntRepository;
 	
+//	@Autowired
+//	private UsagerService usagerService;
+	
 	@Autowired
-	private UsagerService usagerService;
+	private LivreService livreService;
 	
 	@Autowired
 	private ConversionEmprunt conversionEmprunt;
@@ -49,28 +53,23 @@ public class EmpruntService {
 		Emprunt emprunt = this.conversionEmprunt.convertToEntity(empruntDTO);
 		Usager usager = this.usagerConnecteService.authentification();
 		emprunt.setUsager(usager);
-		emprunt.setDateEmprunt(new Date());
+		
+		Date date = new Date();
+		emprunt.setDateEmprunt(date);
+		
+		Date dateRetour = this.dateRetour(date, 28);
+		emprunt.setDateRetour(dateRetour);
+		
+		emprunt.setProlonge(false);
+		
 		emprunt.setActif(true);
+		Livre livre = this.livreService.findById(emprunt.getLivre().getId());
+		livre.setNbreExemplaires(livre.getNbreExemplaires() - 1);
+		this.livreService.editLivre(livre);
+		emprunt.setLivre(livre);
 		this.empruntRepository.save(emprunt);
 		empruntDTO = this.conversionEmprunt.convertToDto(emprunt);
 		return empruntDTO;
-		
-//		Livre livre = emprunt.getLivre();
-//		int nbreExemplaires = livre.getNbreExemplaires();
-//		System.out.println("nbreExemplaires : " + nbreExemplaires);
-//		if(nbreExemplaires <= 0) {
-//			throw new EmpruntException("Ce livre n'est pas disponible pour le moment.");
-//		}
-//		
-//		Usager usager = emprunt.getUsager();
-//		List<Emprunt> emprunts = this.empruntRepository.findByUsager(usager);
-//		for(int i = 0;i < emprunts.size();i++) {
-//			if(emprunt.getLivre().getId().equals(emprunts.get(i).getLivre().getId())) {
-//				throw new EmpruntException("Vous avez déjà emprunter ce livre.");
-//			}
-//		}
-//		
-//		livre.setNbreExemplaires(nbreExemplaires - 1);
 	}
 
 	public void delete(Emprunt emprunt) {
@@ -94,19 +93,12 @@ public class EmpruntService {
 		}
 	}
 	
-//	public List<EmpruntDTO> getEmprunts(Usager usager){
-//		List<Emprunt> emprunts = this.empruntRepository.findByUsager(usager);
-//		return emprunts.stream().map(emprunt -> this.conversionEmprunt.convertToDto(emprunt)).collect(Collectors.toList());
-//	}
+	private Date dateRetour(Date date, int nbreDays) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.DATE, nbreDays);
+		
+		return calendar.getTime();
+	}
 	
-//	public void dejaEnPossession(EmpruntDTO empruntDTO) throws EmpruntException {
-//		Emprunt emprunt = this.conversionEmprunt.convertToEntity(empruntDTO);
-//		Usager usager = emprunt.getUsager();
-//		List<Emprunt> emprunts = this.empruntRepository.findByUsager(usager);
-//		for(int i = 0;i < emprunts.size();i++) {
-//			if(emprunt.getLivre().getId().equals(emprunts.get(i).getLivre().getId())) {
-//				throw new EmpruntException("Vous avez déjà emprunté ce livre.");
-//			}
-//		}
-//	}
 }

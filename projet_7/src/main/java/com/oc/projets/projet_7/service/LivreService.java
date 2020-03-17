@@ -51,10 +51,11 @@ public class LivreService {
 		System.out.println("nbreExemplaires : " + nbreExemplaires);
 		if(nbreExemplaires <= 0) {
 			throw new EmpruntException("Ce livre n'est pas disponible pour le moment.");
-		} else {
-			livre.setNbreExemplaires(nbreExemplaires - 1);
-			this.editLivre(livre);
-		}
+		} 
+//		else {
+//			livre.setNbreExemplaires(nbreExemplaires - 1);
+//			this.editLivre(livre);
+//		}
 	}
 	
 	public void rendre(Livre livre) {

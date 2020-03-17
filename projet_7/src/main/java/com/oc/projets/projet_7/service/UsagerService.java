@@ -47,13 +47,18 @@ public class UsagerService {
 	
 	public UsagerDTO createUsager(UsagerDTO usagerDTO) throws PasswordException {
 		
-		Usager usager = this.conversionUsager.convertToEntity(usagerDTO);
-		
-		String password = usager.getPassword();
+		String password = usagerDTO.getPassword();
+		String confirmPassword = usagerDTO.getConfirmPassword();
 		
 		if(password.length() < 8 || password.length() > 16) {
 			throw new PasswordException("Le mot de passe doit comporter entre 8 et 16 caractères.");
 		}
+		
+		if(!password.equals(confirmPassword)) {
+			throw new PasswordException("Les deux mots de passe doivent être identiques.");
+		}
+		
+		Usager usager = this.conversionUsager.convertToEntity(usagerDTO);
 		
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		String encodePwd = bCryptPasswordEncoder.encode(usager.getPassword());

@@ -7,6 +7,8 @@ public class LivreEmpruntDTO implements Serializable {
 	private Long id;
 	
 	private String titre;
+	
+	private int nbreExemplaires;
 
 	public LivreEmpruntDTO() {
 		super();
@@ -27,5 +29,13 @@ public class LivreEmpruntDTO implements Serializable {
 
 	public void setTitre(String titre) {
 		this.titre = titre;
+	}
+
+	public int getNbreExemplaires() {
+		return nbreExemplaires;
+	}
+
+	public void setNbreExemplaires(int nbreExemplaires) {
+		this.nbreExemplaires = nbreExemplaires;
 	}
 }

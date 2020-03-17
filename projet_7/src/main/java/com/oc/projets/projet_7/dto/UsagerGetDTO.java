@@ -65,11 +65,12 @@ public class UsagerGetDTO implements Serializable {
 		this.email = email;
 	}
 
-//	public List<Emprunt> getListEmprunts() {
-//		return listEmprunts;
-//	}
-//
-//	public void setListEmprunts(List<Emprunt> listEmprunts) {
-//		this.listEmprunts = listEmprunts;
-//	}
+
+
+	@Override
+	public String toString() {
+		return "UsagerGetDTO [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", email=" + email + "]";
+	}
+
+	
 }
