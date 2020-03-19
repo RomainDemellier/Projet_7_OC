@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -73,11 +74,21 @@ public class EmpruntController {
 		return null;
 	}
 	
+	@PutMapping("/emprunt/prolonger/{id}")
+	public EmpruntDTO prolonger(@PathVariable(value = "id") Long empruntId) {
+		try{
+			return this.empruntService.prolonger(empruntId);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	@DeleteMapping("/emprunt/delete/{id}")
-	public void rendre(@PathVariable(value = "id") Long empruntId) {
+	public EmpruntDTO rendre(@PathVariable(value = "id") Long empruntId) {
 		Emprunt emprunt = this.empruntService.findById(empruntId);
 		this.livreService.rendre(emprunt.getLivre());
-		this.empruntService.delete(emprunt);
+		return this.empruntService.delete(emprunt);
 	}
 	/* Action de rendre un livre pour un usager avec l'id de l'usager et l'id du livre
 	 */

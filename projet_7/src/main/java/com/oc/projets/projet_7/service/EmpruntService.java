@@ -72,9 +72,22 @@ public class EmpruntService {
 		return empruntDTO;
 	}
 
-	public void delete(Emprunt emprunt) {
+	public EmpruntDTO delete(Emprunt emprunt) {
 		emprunt.setActif(false);
 		this.empruntRepository.save(emprunt);
+		return this.conversionEmprunt.convertToDto(emprunt);
+	}
+	
+	public EmpruntDTO prolonger(Long empruntId) throws EmpruntException {
+		Emprunt emprunt = this.findById(empruntId);
+		if(!emprunt.getProlonge()) {
+			emprunt.setProlonge(true);
+			emprunt.setDateRetour(this.dateRetour(emprunt.getDateEmprunt(), 56));
+			this.empruntRepository.save(emprunt);
+			return this.conversionEmprunt.convertToDto(emprunt);
+		} else {
+			throw new EmpruntException("Vous avez déjà prolongé une fois l'emprunt de ce livre.");
+		}
 	}
 	
 	public List<EmpruntDTO> getEmpruntsUsagerConnecte() {
@@ -85,7 +98,7 @@ public class EmpruntService {
 	
 	public void dejaEnPossession(EmpruntDTO empruntDTO) throws EmpruntException {
 		Usager usager = this.usagerConnecteService.authentification();
-		List<Emprunt> emprunts = this.empruntRepository.findByUsager(usager);
+		List<Emprunt> emprunts = this.empruntRepository.findByUsagerAndActif(usager, true);
 		for(int i = 0;i < emprunts.size();i++) {
 			if(emprunts.get(i).getLivre().getId().equals(empruntDTO.getLivre().getId())) {
 				throw new EmpruntException("Vous êtes déjà en possession de ce livre.");

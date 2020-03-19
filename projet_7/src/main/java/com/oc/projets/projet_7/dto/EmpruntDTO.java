@@ -7,7 +7,7 @@ public class EmpruntDTO implements Serializable {
 
 	private Long id;
 	
-	private LivreEmpruntDTO livre;
+	private LivreDTO livre;
 	
 	private UsagerGetDTO usager;
 	
@@ -31,11 +31,11 @@ public class EmpruntDTO implements Serializable {
 		this.id = id;
 	}
 
-	public LivreEmpruntDTO getLivre() {
+	public LivreDTO getLivre() {
 		return livre;
 	}
 
-	public void setLivre(LivreEmpruntDTO livre) {
+	public void setLivre(LivreDTO livre) {
 		this.livre = livre;
 	}
 

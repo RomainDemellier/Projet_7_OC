@@ -60,6 +60,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		.authorizeRequests()
 		.antMatchers(HttpMethod.POST,"/authenticate").permitAll()
 		.antMatchers(HttpMethod.POST,"/api/usager/create").permitAll()
+//		.antMatchers(HttpMethod.PUT,"/api/emprunt/prolonger").authenticated()
 		.antMatchers(HttpMethod.GET,"/api/hello").permitAll()
 		.antMatchers(HttpMethod.GET,"/api/authenticated/hello").authenticated()
 		.antMatchers(HttpMethod.GET,"/api/admin/hello").hasAuthority("ADMIN")
