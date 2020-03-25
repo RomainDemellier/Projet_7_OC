@@ -2,12 +2,22 @@ package com.oc.projets.projet_7.dto;
 
 public class AuteurDTO {
 
+	private Long id;
+
 	private String nom;
 	
 	private String prenom;
 	
 	public AuteurDTO() {
 		
+	}
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getNom() {

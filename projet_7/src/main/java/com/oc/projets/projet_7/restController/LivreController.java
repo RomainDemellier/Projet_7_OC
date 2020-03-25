@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oc.projets.projet_7.conversion.ConversionLivre;
+import com.oc.projets.projet_7.dto.LivreCreationDTO;
 import com.oc.projets.projet_7.dto.LivreDTO;
 import com.oc.projets.projet_7.entity.Auteur;
 import com.oc.projets.projet_7.entity.Livre;
@@ -26,9 +27,6 @@ public class LivreController {
 
 	@Autowired
 	private LivreService livreService;
-	
-	@Autowired
-	private AuteurService auteurService;
 	
 	@Autowired
 	private ConversionLivre conversionLivre;
@@ -49,13 +47,7 @@ public class LivreController {
 	
 	/* Créer un livre */
 	@PostMapping("/livre/create")
-	public Livre createLivre(@RequestBody Livre livre) {
+	public Livre createLivre(@RequestBody LivreCreationDTO livre) {
 		return this.livreService.createLivre(livre);
-	}
-	
-	/* Créer un auteur */
-	@PostMapping("/auteur/create")
-	public Auteur createAuteur(@RequestBody Auteur auteur) {
-		return this.auteurService.createAuteur(auteur);
 	}
 }

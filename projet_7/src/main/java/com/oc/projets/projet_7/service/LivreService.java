@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.oc.projets.projet_7.conversion.ConversionLivre;
+import com.oc.projets.projet_7.dto.LivreCreationDTO;
 import com.oc.projets.projet_7.dto.LivreDTO;
 import com.oc.projets.projet_7.entity.Livre;
 import com.oc.projets.projet_7.exception.EmpruntException;
@@ -22,7 +23,8 @@ public class LivreService {
 	@Autowired
 	private ConversionLivre conversionLivre;
 	
-	public Livre createLivre(Livre livre) {
+	public Livre createLivre(LivreCreationDTO livreCreationDTO) {
+		Livre livre = this.conversionLivre.convertToEntity(livreCreationDTO);
 		return this.livreRepository.save(livre);
 	}
 	

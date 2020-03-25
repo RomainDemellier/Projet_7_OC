@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.oc.projets.projet_7.dto.LivreCreationDTO;
 import com.oc.projets.projet_7.dto.LivreDTO;
 import com.oc.projets.projet_7.dto.LivreEmpruntDTO;
 import com.oc.projets.projet_7.entity.Livre;
@@ -35,6 +36,11 @@ public class ConversionLivre {
 	
 	public Livre convertToEntity(LivreDTO livreDTO) {
 		Livre livre = modelMapper.map(livreDTO, Livre.class);
+		return livre;
+	}
+	
+	public Livre convertToEntity(LivreCreationDTO livreCreationDTO) {
+		Livre livre = modelMapper.map(livreCreationDTO, Livre.class);
 		return livre;
 	}
 }
