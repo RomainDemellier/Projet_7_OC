@@ -1,5 +1,7 @@
 package com.oc.projets.projet_7.service;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -72,8 +74,14 @@ public class UsagerService {
 		return this.conversionUsager.convertToDto(usager);
 	}
 	
-	public Usager editUsager(Usager usager) {
-		return this.usagerRepository.save(usager);
+	public UsagerGetDTO editRoleUsager(UsagerGetDTO usagerGetDTO) {
+		Usager usager = this.findById(usagerGetDTO.getId());
+//		usager.setNom(usagerGetDTO.getNom());
+//		usager.setPrenom(usagerGetDTO.getPrenom());
+//		usager.setEmail(usagerGetDTO.getEmail());
+		usager.setRole(usagerGetDTO.getRole());
+		usager = this.usagerRepository.save(usager);
+		return this.conversionUsager.convertToGetDTO(usager);
 	}
 	
 	public Usager findById(Long id) {
@@ -91,6 +99,18 @@ public class UsagerService {
 	
 	public List<UsagerGetDTO> getAll(){
 		List<Usager> usagers = this.usagerRepository.findAll();
+		return usagers.stream().map(usager -> this.conversionUsager.convertToGetDTO(usager)).collect(Collectors.toList());
+	}
+	
+	public List<UsagerGetDTO> getAllIdNot(Long id){
+		//List<Usager> usagers = this.usagerRepository.findAllByOrderByNomAscAndIdNot(id);
+		List<Usager> usagers = this.usagerRepository.findByIdNot(id);
+		Collections.sort(usagers, new Comparator<Usager>() {
+			@Override
+			public int compare(Usager u1, Usager u2) {
+				return u1.getPrenom().compareTo(u2.getPrenom());
+			}
+		});
 		return usagers.stream().map(usager -> this.conversionUsager.convertToGetDTO(usager)).collect(Collectors.toList());
 	}
 	

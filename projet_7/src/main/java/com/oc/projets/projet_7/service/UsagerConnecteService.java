@@ -26,9 +26,9 @@ public class UsagerConnecteService {
 	
 	public UsagerGetDTO getUsagerConnecte() {
 		
-		if(usager == null) {
-			this.usager = this.authentification();
-		}
+		
+		this.usager = this.authentification();
+		
 		System.out.println(this.conversionUsager.convertToGetDTO(usager));
 		return this.conversionUsager.convertToGetDTO(usager);
 	}

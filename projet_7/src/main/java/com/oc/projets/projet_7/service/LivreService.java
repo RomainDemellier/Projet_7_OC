@@ -38,7 +38,8 @@ public class LivreService {
 	}
 	
 	public List<LivreDTO> getAllLivres(){
-		List<Livre> livres = this.livreRepository.findAll();
+		List<Livre> livres = this.livreRepository.findAllByOrderByTitreAsc();
+		//List<Livre> livres = this.livreRepository.findAllOrderByTitreAsc();
 		return livres.stream().map(livre -> this.conversionLivre.convertToDto(livre)).collect(Collectors.toList());
 	}
 	

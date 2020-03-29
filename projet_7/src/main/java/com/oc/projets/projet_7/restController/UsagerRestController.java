@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oc.projets.projet_7.conversion.ConversionEmprunt;
@@ -49,11 +51,14 @@ public class UsagerRestController {
 	private ConversionEmprunt conversionEmprunt;
 	
 	/* Retourne la liste de tous les usagers */
+//	@GetMapping("/usager")
+//	public List<UsagerGetDTO> getAllUsagers(){
+//		return this.usagerService.getAll();
+//	}
+	
 	@GetMapping("/usager")
 	public List<UsagerGetDTO> getAllUsagers(){
-//		List<Usager> usagers = this.usagerService.getAll();
-//		return usagers.stream().map(usager -> this.conversionUsager.convertToGetDTO(usager)).collect(Collectors.toList());
-		return this.usagerService.getAll();
+		return this.usagerService.getAllIdNot(this.usagerConnecteService.getUsagerConnecte().getId());
 	}
 	
 	/* Retourne un usager en fonction de son id */
@@ -76,6 +81,11 @@ public class UsagerRestController {
 		
 		//return this.conversionUsager.convertToDto(usager);
 		return usagerDTO;
+	}
+	
+	@PutMapping("/usager/update/role")
+	public UsagerGetDTO editUsager(@RequestBody UsagerGetDTO usagerGetDTO) {
+		return this.usagerService.editRoleUsager(usagerGetDTO);
 	}
 	
 	@GetMapping("/usager/emprunts")
