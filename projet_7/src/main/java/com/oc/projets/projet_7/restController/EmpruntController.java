@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,36 +61,36 @@ public class EmpruntController {
 	}
 	
 	@PostMapping("/emprunt/create")
-	public EmpruntDTO emprunter(@RequestBody EmpruntDTO empruntDTO) {
+	public ResponseEntity<EmpruntDTO> emprunter(@RequestBody EmpruntDTO empruntDTO) {
 		
 		//System.out.println(this.empruntService.create(empruntDTO).toString());
 		try {
 			this.empruntService.dejaEnPossession(empruntDTO);
 			this.livreService.estDisponible(empruntDTO.getLivre().getId());
-			return this.empruntService.create(empruntDTO);
+			return ResponseEntity.ok(this.empruntService.create(empruntDTO));
 			//return this.empruntService.create(empruntDTO);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-		return null;
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(empruntDTO);
 	}
 	
 	@PutMapping("/emprunt/prolonger/{id}")
-	public EmpruntDTO prolonger(@PathVariable(value = "id") Long empruntId) {
+	public ResponseEntity<EmpruntDTO> prolonger(@PathVariable(value = "id") Long empruntId) {
 		try{
-			return this.empruntService.prolonger(empruntId);
+			return ResponseEntity.ok(this.empruntService.prolonger(empruntId));
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
 	}
 	
 	@DeleteMapping("/emprunt/delete/{id}")
-	public EmpruntDTO rendre(@PathVariable(value = "id") Long empruntId) {
+	public ResponseEntity<EmpruntDTO> rendre(@PathVariable(value = "id") Long empruntId) {
 		Emprunt emprunt = this.empruntService.findById(empruntId);
 		this.livreService.rendre(emprunt.getLivre());
-		return this.empruntService.delete(emprunt);
+		return ResponseEntity.ok(this.empruntService.delete(emprunt));
 	}
 	/* Action de rendre un livre pour un usager avec l'id de l'usager et l'id du livre
 	 */

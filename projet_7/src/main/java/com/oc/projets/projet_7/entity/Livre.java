@@ -37,6 +37,9 @@ public class Livre implements Serializable {
 	
 	@Column(name = "nbre_exemplaires")
 	private int nbreExemplaires;
+	
+	@Column(name = "full_name_auteur")
+	private String fullNameAuteur;
 
 	public Livre() {
 		super();
@@ -81,5 +84,13 @@ public class Livre implements Serializable {
 
 	public void setNbreExemplaires(int nbreExemplaires) {
 		this.nbreExemplaires = nbreExemplaires;
+	}
+
+	public String getFullNameAuteur() {
+		return fullNameAuteur;
+	}
+
+	public void setFullNameAuteur(String fullNameAuteur) {
+		this.fullNameAuteur = fullNameAuteur;
 	}
 }

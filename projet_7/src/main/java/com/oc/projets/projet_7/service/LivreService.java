@@ -25,11 +25,19 @@ public class LivreService {
 	
 	public Livre createLivre(LivreCreationDTO livreCreationDTO) {
 		Livre livre = this.conversionLivre.convertToEntity(livreCreationDTO);
+		livre.setFullNameAuteur(livre.getAuteur().getPrenom() + ' ' + livre.getAuteur().getNom());
 		return this.livreRepository.save(livre);
 	}
 	
 	public Livre editLivre(Livre livre) {
 		return this.livreRepository.save(livre);
+	}
+	
+	public LivreDTO editNbreExemplaires(LivreDTO livreDTO) {
+		Livre livre = this.findById(livreDTO.getId());
+		livre.setNbreExemplaires(livreDTO.getNbreExemplaires());
+		livre = this.editLivre(livre);
+		return this.conversionLivre.convertToDto(livre);
 	}
 	
 	public LivreDTO getLivre(Long id) {

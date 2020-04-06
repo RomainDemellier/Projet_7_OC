@@ -12,6 +12,8 @@ public class LivreDTO {
 	
 	private int nbreExemplaires;
 	
+	private String fullNameAuteur;
+	
 	public LivreDTO() {
 		
 	}
@@ -54,5 +56,13 @@ public class LivreDTO {
 
 	public void setNbreExemplaires(int nbreExemplaires) {
 		this.nbreExemplaires = nbreExemplaires;
+	}
+
+	public String getFullNameAuteur() {
+		return fullNameAuteur;
+	}
+
+	public void setFullNameAuteur(String fullNameAuteur) {
+		this.fullNameAuteur = fullNameAuteur;
 	}
 }

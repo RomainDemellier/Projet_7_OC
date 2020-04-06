@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.method.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -71,21 +73,41 @@ public class UsagerRestController {
 	
 	/* Créer un usager */
 	@PostMapping("/usager/create")
-	public UsagerDTO createUsager(@RequestBody UsagerDTO usagerDTO) {
+	public ResponseEntity<UsagerDTO> createUsager(@RequestBody UsagerDTO usagerDTO) {
 		//Usager usager = this.conversionUsager.convertToEntity(usagerDTO);
 		try{
 			usagerDTO = this.usagerService.createUsager(usagerDTO);
+			return ResponseEntity.ok(usagerDTO);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 		
 		//return this.conversionUsager.convertToDto(usager);
-		return usagerDTO;
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(usagerDTO);
+	}
+	
+	@PostMapping("/usager/createAdmin")
+	public ResponseEntity<UsagerDTO> createAdmin(@RequestBody UsagerDTO usagerDTO) {
+		//Usager usager = this.conversionUsager.convertToEntity(usagerDTO);
+		try{
+			usagerDTO = this.usagerService.createAdmin(usagerDTO);
+			return ResponseEntity.ok(usagerDTO);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		//return this.conversionUsager.convertToDto(usager);
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(usagerDTO);
 	}
 	
 	@PutMapping("/usager/update/role")
 	public UsagerGetDTO editUsager(@RequestBody UsagerGetDTO usagerGetDTO) {
 		return this.usagerService.editRoleUsager(usagerGetDTO);
+	}
+	
+	@PutMapping("/usager/update/profil")
+	public UsagerGetDTO editProfilUsager(@RequestBody UsagerGetDTO usagerGetDTO) {
+		return this.usagerService.editProfilUsager(usagerGetDTO);
 	}
 	
 	@GetMapping("/usager/emprunts")

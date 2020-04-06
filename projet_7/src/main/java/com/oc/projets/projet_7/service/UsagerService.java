@@ -74,12 +74,48 @@ public class UsagerService {
 		return this.conversionUsager.convertToDto(usager);
 	}
 	
+	public UsagerDTO createAdmin(UsagerDTO usagerDTO) throws PasswordException {
+		
+		String password = usagerDTO.getPassword();
+		String confirmPassword = usagerDTO.getConfirmPassword();
+		
+		if(password.length() < 8 || password.length() > 16) {
+			throw new PasswordException("Le mot de passe doit comporter entre 8 et 16 caractères.");
+		}
+		
+		if(!password.equals(confirmPassword)) {
+			throw new PasswordException("Les deux mots de passe doivent être identiques.");
+		}
+		
+		Usager usager = this.conversionUsager.convertToEntity(usagerDTO);
+		
+		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+		String encodePwd = bCryptPasswordEncoder.encode(usager.getPassword());
+		System.out.println("encodePwd : " + encodePwd);
+		usager.setPassword(encodePwd);
+		
+		usager.setRole("ADMIN");
+		
+		this.usagerRepository.save(usager);
+		
+		return this.conversionUsager.convertToDto(usager);
+	}
+	
 	public UsagerGetDTO editRoleUsager(UsagerGetDTO usagerGetDTO) {
 		Usager usager = this.findById(usagerGetDTO.getId());
 //		usager.setNom(usagerGetDTO.getNom());
 //		usager.setPrenom(usagerGetDTO.getPrenom());
 //		usager.setEmail(usagerGetDTO.getEmail());
 		usager.setRole(usagerGetDTO.getRole());
+		usager = this.usagerRepository.save(usager);
+		return this.conversionUsager.convertToGetDTO(usager);
+	}
+	
+	public UsagerGetDTO editProfilUsager(UsagerGetDTO usagerGetDTO) {
+		Usager usager = this.findById(usagerGetDTO.getId());
+		usager.setPrenom(usagerGetDTO.getPrenom());
+		usager.setNom(usagerGetDTO.getNom());
+		usager.setEmail(usagerGetDTO.getEmail());
 		usager = this.usagerRepository.save(usager);
 		return this.conversionUsager.convertToGetDTO(usager);
 	}

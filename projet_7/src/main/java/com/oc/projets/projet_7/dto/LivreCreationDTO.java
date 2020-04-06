@@ -11,6 +11,8 @@ public class LivreCreationDTO {
 	private String genre;
 	
 	private int nbreExemplaires;
+	
+	private String fullNameAuteur;
 
 	public String getTitre() {
 		return titre;
@@ -42,5 +44,13 @@ public class LivreCreationDTO {
 
 	public void setNbreExemplaires(int nbreExemplaires) {
 		this.nbreExemplaires = nbreExemplaires;
+	}
+
+	public String getFullNameAuteur() {
+		return fullNameAuteur;
+	}
+
+	public void setFullNameAuteur(String fullNameAuteur) {
+		this.fullNameAuteur = fullNameAuteur;
 	}
 }
