@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(value = {"createdAt", "updateAt"},
 		allowGetters = true)
 public class Auteur implements Serializable {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -57,5 +57,8 @@ public class Auteur implements Serializable {
 		this.prenom = prenom;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "Auteur [id=" + id + ", nom=" + nom + ", prenom=" + prenom + "]";
+	}
 }

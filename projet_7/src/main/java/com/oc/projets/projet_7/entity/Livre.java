@@ -93,4 +93,10 @@ public class Livre implements Serializable {
 	public void setFullNameAuteur(String fullNameAuteur) {
 		this.fullNameAuteur = fullNameAuteur;
 	}
+
+	@Override
+	public String toString() {
+		return "Livre [id=" + id + ", titre=" + titre + ", auteur=" + auteur + ", genre=" + genre + ", nbreExemplaires="
+				+ nbreExemplaires + ", fullNameAuteur=" + fullNameAuteur + "]";
+	}
 }
