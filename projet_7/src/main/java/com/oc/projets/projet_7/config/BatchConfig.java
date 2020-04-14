@@ -1,5 +1,7 @@
 package com.oc.projets.projet_7.config;
 
+import java.util.Date;
+
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionListener;
@@ -20,11 +22,13 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import com.oc.projets.projet_7.batch.Processor;
+import com.oc.projets.projet_7.batch.Reader;
 import com.oc.projets.projet_7.batch.JpaRepositoryItemReader;
 import com.oc.projets.projet_7.batch.Writer;
 import com.oc.projets.projet_7.entity.Emprunt;
@@ -48,9 +52,6 @@ public class BatchConfig {
 	@Autowired
 	public JavaMailSender javaMailSender;
 	
-//	@Autowired
-//	Job processJob;
-	
 	@Autowired
 	private EmpruntRepository empruntRepository;
 	
@@ -62,8 +63,8 @@ public class BatchConfig {
 	}
 	
 	@Bean Step orderStep1() {
-		return stepBuilderFactory.get("orderStep1").<Emprunt, Emprunt>chunk(8)
-				.reader(new JpaRepositoryItemReader<Emprunt>(this.empruntRepository)).processor(new Processor())
+		return stepBuilderFactory.get("orderStep1").<Emprunt, SimpleMailMessage>chunk(8)
+				.reader(new Reader(this.empruntRepository, new Date(2020, 2, 18))).processor(new Processor())
 				.writer(new Writer(this.javaMailSender)).build();
 	}
 	
@@ -83,31 +84,4 @@ public class BatchConfig {
 			}
 		};
 	}
-	
-//	@Scheduled(cron = "* /5 * * * *")
-//	public void perform() throws Exception {
-//		System.out.println("Entrée dans perform");
-//		JobParameters jobParameters = new JobParametersBuilder().addLong("time", System.currentTimeMillis())
-//				.toJobParameters();
-//		jobLauncher.run(processJob, jobParameters);
-//	}
-	
-//	@Bean
-//	public JobBuilderFactory jobBuilderFactory2() {
-//		return new JobBuilderFactory();
-//	}
-	
-	
-//	@Bean(name = "launcher")
-//	JobLauncher jobLauncher() {
-//		return new JobLauncher() {
-//			
-//			@Override
-//			public JobExecution run(Job job, JobParameters jobParameters) throws JobExecutionAlreadyRunningException,
-//					JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
-//				// TODO Auto-generated method stub
-//				return null;
-//			}
-//		};
-//	}
 }

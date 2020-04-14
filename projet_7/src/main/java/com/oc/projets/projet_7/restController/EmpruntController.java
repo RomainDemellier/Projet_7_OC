@@ -1,7 +1,10 @@
 package com.oc.projets.projet_7.restController;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -27,6 +30,7 @@ import com.oc.projets.projet_7.dto.UsagerGetDTO;
 import com.oc.projets.projet_7.entity.Emprunt;
 import com.oc.projets.projet_7.entity.Livre;
 import com.oc.projets.projet_7.entity.Usager;
+import com.oc.projets.projet_7.repository.EmpruntRepository;
 import com.oc.projets.projet_7.service.EmpruntService;
 import com.oc.projets.projet_7.service.LivreService;
 import com.oc.projets.projet_7.service.UsagerService;
@@ -45,6 +49,9 @@ public class EmpruntController {
 	
 	@Autowired
 	private EmpruntService empruntService;
+	
+	@Autowired
+	private EmpruntRepository empruntRepository;
 	
 	/* Action d'emprunter un livre pour un usager avec l'id de l'usager et l'id du livre 
 	 * On décrémente le nombre d'exemplaires du livre et on save le livre
@@ -92,18 +99,19 @@ public class EmpruntController {
 		this.livreService.rendre(emprunt.getLivre());
 		return ResponseEntity.ok(this.empruntService.delete(emprunt));
 	}
-	/* Action de rendre un livre pour un usager avec l'id de l'usager et l'id du livre
-	 */
-//	@DeleteMapping("/emprunt/usager/{usagerId}/livre/{livreId}")
-//	public Usager rendre(@PathVariable(value = "usagerId") Long usagerId, @PathVariable(value = "livreId") Long livreId) {
-//		Usager usager = this.usagerService.findById(usagerId);
-//		
-//		Livre livre = this.livreService.findById(livreId);
-//		System.out.println("avant : " + livre.getNbreExemplaires());
-//		
-//		usager = this.usagerService.rendre(usager, livre);
-//		System.out.println("après : " + livre.getNbreExemplaires());
-//		this.livreService.editLivre(livre);
-//		return usager;
-//	}
+
+	@GetMapping("/testDate")
+	public void test() {
+		LocalDate date = LocalDate.now();
+		date = date.plusDays(-3);
+		System.out.println(date);
+//		List<Emprunt> emprunts = this.empruntRepository.findAll();
+//		for(int i = 0;i < emprunts.size();i++) {
+//			//System.out.println(emprunts.get(i).getDateEmprunt());
+//			Emprunt emprunt  = emprunts.get(i);
+//			date = emprunt.getDateEmprunt();
+//			emprunt.setDateEmprunt(date);
+//			this.empruntRepository.save(emprunt);
+//		}
+	}
 }

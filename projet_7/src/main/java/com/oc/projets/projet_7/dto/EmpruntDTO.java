@@ -1,6 +1,7 @@
 package com.oc.projets.projet_7.dto;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class EmpruntDTO implements Serializable {
@@ -11,9 +12,9 @@ public class EmpruntDTO implements Serializable {
 	
 	private UsagerGetDTO usager;
 	
-	private Date dateEmprunt;
+	private LocalDate dateEmprunt;
 	
-	private Date dateRetour;
+	private LocalDate dateRetour;
 	
 	private Boolean prolonge;
 	
@@ -47,11 +48,11 @@ public class EmpruntDTO implements Serializable {
 		this.usager = usagerGetDTO;
 	}
 
-	public Date getDateEmprunt() {
+	public LocalDate getDateEmprunt() {
 		return dateEmprunt;
 	}
 
-	public void setDateEmprunt(Date dateEmprunt) {
+	public void setDateEmprunt(LocalDate dateEmprunt) {
 		this.dateEmprunt = dateEmprunt;
 	}
 	
@@ -64,7 +65,7 @@ public class EmpruntDTO implements Serializable {
 		this.actif = actif;
 	}
 
-	public Date getDateRetour() {
+	public LocalDate getDateRetour() {
 		return dateRetour;
 	}
 
@@ -72,7 +73,7 @@ public class EmpruntDTO implements Serializable {
 		return prolonge;
 	}
 
-	public void setDateRetour(Date dateRetour) {
+	public void setDateRetour(LocalDate dateRetour) {
 		this.dateRetour = dateRetour;
 	}
 

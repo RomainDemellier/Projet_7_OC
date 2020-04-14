@@ -1,28 +1,42 @@
 package com.oc.projets.projet_7.batch;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
 
 import com.oc.projets.projet_7.entity.Emprunt;
 import com.oc.projets.projet_7.entity.Livre;
 
+import javassist.expr.NewArray;
+
 @Component
 @StepScope
-public class Processor implements ItemProcessor<Emprunt, Emprunt> {
+public class Processor implements ItemProcessor<Emprunt, SimpleMailMessage> {
 
 	@Override
-	public Emprunt process(Emprunt item) throws Exception {
+	public SimpleMailMessage process(Emprunt item) throws Exception {
 		// TODO Auto-generated method stub
-		SimpleDateFormat formater = new SimpleDateFormat("dd/MM/yyyy");
-		String dateEmprunt = "18/03/2020";
-		if(dateEmprunt.equals(formater.format(item.getDateEmprunt())) && item.getId().equals(new Long(6))) {
-		return item;
-		} else {
-			return null;
-		}
+		SimpleMailMessage msg = new SimpleMailMessage();
+		msg.setTo("romaindemellier@gmail.com");
+		msg.setSubject("Emprunt : " + item.getLivre().getTitre());
+		msg.setText("Bonjour " + item.getUsager().getPrenom() + ' ' + item.getUsager().getNom() + ",\n" + 
+				"Vous avez emprunté le livre : " + item.getLivre().getTitre() + '.');
+		return msg;
+//		SimpleDateFormat formater = new SimpleDateFormat("dd/MM/yyyy");
+//		String date = formater.format(new Date());
+//		if(date.equals(formater.format(item.getDateEmprunt()))) {
+//			msg.setTo("romaindemellier@gmail.com");
+//			msg.setSubject("Emprunt : " + item.getLivre().getTitre());
+//			msg.setText("Bonjour " + item.getUsager().getPrenom() + ' ' + item.getUsager().getNom() + ",\n" + 
+//					"Vous avez emprunté le livre : " + item.getLivre().getTitre() + '.');
+//			return msg;
+//		} else {
+//			return null;
+//		}
 	}
 
 }

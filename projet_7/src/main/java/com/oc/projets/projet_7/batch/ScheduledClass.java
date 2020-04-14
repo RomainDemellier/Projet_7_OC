@@ -19,8 +19,9 @@ public class ScheduledClass {
 	@Autowired
 	Job processJob;
 
-	@Scheduled(fixedRate = 50000)
+	//@Scheduled(fixedRate = 50000)
 	//@Scheduled(cron = "0 * 8 * * *")
+	//@Scheduled(cron = "*/40 * * * * *")
 	public void perform() throws Exception {
 		//System.out.println("Entrée dans perform");
 		JobParameters jobParameters = new JobParametersBuilder().addLong("time", System.currentTimeMillis())

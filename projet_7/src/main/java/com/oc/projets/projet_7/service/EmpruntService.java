@@ -1,10 +1,13 @@
 package com.oc.projets.projet_7.service;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import java.text.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,21 +58,36 @@ public class EmpruntService {
 		emprunt.setUsager(usager);
 		
 		Date date = new Date();
-		emprunt.setDateEmprunt(date);
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		
-		Date dateRetour = this.dateRetour(date, 28);
-		emprunt.setDateRetour(dateRetour);
-		
-		emprunt.setProlonge(false);
-		
-		emprunt.setActif(true);
-		Livre livre = this.livreService.findById(emprunt.getLivre().getId());
-		livre.setNbreExemplaires(livre.getNbreExemplaires() - 1);
-		this.livreService.editLivre(livre);
-		emprunt.setLivre(livre);
-		this.empruntRepository.save(emprunt);
-		empruntDTO = this.conversionEmprunt.convertToDto(emprunt);
-		return empruntDTO;
+		LocalDate localDate = LocalDate.now();
+		try {
+			date = format.parse(format.format(date));
+			
+			emprunt.setDateEmprunt(localDate);
+			
+			LocalDate localDate2 = localDate.plusDays(28);
+			
+			emprunt.setDateRetour(localDate2);
+			
+			Date dateRetour = this.dateRetour(date, 28);
+			//emprunt.setDateRetour(dateRetour);
+			
+			emprunt.setProlonge(false);
+			
+			emprunt.setActif(true);
+			Livre livre = this.livreService.findById(emprunt.getLivre().getId());
+			livre.setNbreExemplaires(livre.getNbreExemplaires() - 1);
+			this.livreService.editLivre(livre);
+			emprunt.setLivre(livre);
+			this.empruntRepository.save(emprunt);
+			empruntDTO = this.conversionEmprunt.convertToDto(emprunt);
+			return empruntDTO;
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public EmpruntDTO delete(Emprunt emprunt) {
@@ -82,7 +100,8 @@ public class EmpruntService {
 		Emprunt emprunt = this.findById(empruntId);
 		if(!emprunt.getProlonge()) {
 			emprunt.setProlonge(true);
-			emprunt.setDateRetour(this.dateRetour(emprunt.getDateEmprunt(), 56));
+			//emprunt.setDateRetour(this.dateRetour(emprunt.getDateEmprunt(), 56));
+			emprunt.setDateRetour(emprunt.getDateEmprunt().plusDays(56));
 			this.empruntRepository.save(emprunt);
 			return this.conversionEmprunt.convertToDto(emprunt);
 		} else {

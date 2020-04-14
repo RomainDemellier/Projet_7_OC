@@ -1,6 +1,7 @@
 package com.oc.projets.projet_7.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -40,10 +41,10 @@ public class Emprunt implements Serializable {
 	private Usager usager;
 	
 	@Column(name="date_emprunt")
-	private Date dateEmprunt;
+	private LocalDate dateEmprunt;
 	
 	@Column(name = "date_retour")
-	private Date dateRetour;
+	private LocalDate dateRetour;
 	
 	private Boolean prolonge;
 	
@@ -78,11 +79,11 @@ public class Emprunt implements Serializable {
 		this.usager = usager;
 	}
 
-	public Date getDateEmprunt() {
+	public LocalDate getDateEmprunt() {
 		return dateEmprunt;
 	}
 
-	public void setDateEmprunt(Date dateEmprunt) {
+	public void setDateEmprunt(LocalDate dateEmprunt) {
 		this.dateEmprunt = dateEmprunt;
 	}
 
@@ -94,7 +95,7 @@ public class Emprunt implements Serializable {
 		this.actif = actif;
 	}
 
-	public Date getDateRetour() {
+	public LocalDate getDateRetour() {
 		return dateRetour;
 	}
 
@@ -102,7 +103,7 @@ public class Emprunt implements Serializable {
 		return prolonge;
 	}
 
-	public void setDateRetour(Date dateRetour) {
+	public void setDateRetour(LocalDate dateRetour) {
 		this.dateRetour = dateRetour;
 	}
 
