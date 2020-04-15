@@ -114,6 +114,6 @@ public class Emprunt implements Serializable {
 	@Override
 	public String toString() {
 		return "Emprunt [id=" + id + ", livre=" + livre + ", usager=" + usager + ", dateEmprunt=" + dateEmprunt
-				+ ", actif=" + actif + "]";
+				+ ", dateRetour=" + dateRetour + ", prolonge=" + prolonge + ", actif=" + actif + "]";
 	}
 }

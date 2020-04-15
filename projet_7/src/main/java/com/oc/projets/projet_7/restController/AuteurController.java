@@ -3,6 +3,7 @@ package com.oc.projets.projet_7.restController;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ public class AuteurController {
 	
 	/* Créer un auteur */
 	@PostMapping("/auteur/create")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public Auteur createAuteur(@RequestBody Auteur auteur) {
 		return this.auteurService.createAuteur(auteur);
 	}

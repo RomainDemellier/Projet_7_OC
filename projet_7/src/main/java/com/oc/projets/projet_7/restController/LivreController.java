@@ -49,11 +49,13 @@ public class LivreController {
 	
 	/* Créer un livre */
 	@PostMapping("/livre/create")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public Livre createLivre(@RequestBody LivreCreationDTO livre) {
 		return this.livreService.createLivre(livre);
 	}
 	
 	@PutMapping("/livre/editNbreExemplaires")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public LivreDTO editNbreExemplaires(@RequestBody LivreDTO livreDTO) {
 		return this.livreService.editNbreExemplaires(livreDTO);
 	}

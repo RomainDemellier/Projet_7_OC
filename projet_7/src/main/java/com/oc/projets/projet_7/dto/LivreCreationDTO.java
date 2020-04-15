@@ -53,4 +53,10 @@ public class LivreCreationDTO {
 	public void setFullNameAuteur(String fullNameAuteur) {
 		this.fullNameAuteur = fullNameAuteur;
 	}
+
+	@Override
+	public String toString() {
+		return "LivreCreationDTO [titre=" + titre + ", auteur=" + auteur + ", genre=" + genre + ", nbreExemplaires="
+				+ nbreExemplaires + ", fullNameAuteur=" + fullNameAuteur + "]";
+	}
 }

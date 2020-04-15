@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.method.P;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,6 +60,7 @@ public class UsagerRestController {
 //	}
 	
 	@GetMapping("/usager")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public List<UsagerGetDTO> getAllUsagers(){
 		return this.usagerService.getAllIdNot(this.usagerConnecteService.getUsagerConnecte().getId());
 	}
@@ -87,6 +89,7 @@ public class UsagerRestController {
 	}
 	
 	@PostMapping("/usager/createAdmin")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<UsagerDTO> createAdmin(@RequestBody UsagerDTO usagerDTO) {
 		//Usager usager = this.conversionUsager.convertToEntity(usagerDTO);
 		try{
@@ -101,60 +104,21 @@ public class UsagerRestController {
 	}
 	
 	@PutMapping("/usager/update/role")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public UsagerGetDTO editUsager(@RequestBody UsagerGetDTO usagerGetDTO) {
 		return this.usagerService.editRoleUsager(usagerGetDTO);
 	}
 	
 	@PutMapping("/usager/update/profil")
+	@PreAuthorize("isAuthenticated()")
 	public UsagerGetDTO editProfilUsager(@RequestBody UsagerGetDTO usagerGetDTO) {
 		return this.usagerService.editProfilUsager(usagerGetDTO);
 	}
 	
 	@GetMapping("/usager/emprunts")
+	@PreAuthorize("isAuthenticated()")
 	public List<EmpruntDTO> getEmprunts(){
 		return this.empruntService.getEmpruntsUsagerConnecte();
-	}
-	
-	/* Retourne la liste des emprunts d'un usager avec l'id de l'usager */
-//	@GetMapping("/usager/{id}/emprunts")
-//	public List<EmpruntDTO> getEmprunts(@PathVariable(value = "id") Long usagerId){
-////		Usager usager = this.usagerService.findById(usagerId);
-////		return usager.getListEmprunts().stream().map(emprunt -> this.conversionEmprunt.convertToDto(emprunt)).collect(Collectors.toList());
-//		return this.usagerService.getEmprunts(usagerId);
-//	}
-//	
-//	/* Retourne un emprunt en fonction de son id */
-//	@GetMapping("/emprunt/{id}")
-//	public EmpruntDTO getEmprunt(@PathVariable(value = "id") Long empruntId) {
-//		
-//		Emprunt emprunt = this.empruntService.findById(empruntId);
-//		return this.conversionEmprunt.convertToDto(emprunt);
-//		//return this.empruntService.findById(empruntId);
-//	}
-	
-	@GetMapping("/authenticated/hello")
-	public String authenticatedHello() {
-		return "Authenticated Hello World !";
-	}
-	
-	@GetMapping("/admin/hello")
-	public String adminHello() {
-		return "Admin Hello World !";
-	}
-	
-	@GetMapping("/hello")
-	public String hello() {
-		Date date = new Date();
-		System.out.println("Date aujourd'hui : " + date);
-		
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		calendar.add(Calendar.DATE, 28);
-		
-		Date datePlus28days = calendar.getTime();
-		System.out.println("Date + 28 jours : " + datePlus28days);
-		
-		return "Non Authenticated Hello World !";
 	}
 	
 	@GetMapping("/usager/connecte")

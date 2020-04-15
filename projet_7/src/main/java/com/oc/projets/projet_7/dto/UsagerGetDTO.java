@@ -79,8 +79,7 @@ public class UsagerGetDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "UsagerGetDTO [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", email=" + email + "]";
-	}
-
-	
+		return "UsagerGetDTO [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", role=" + role
+				+ "]";
+	}	
 }

@@ -38,4 +38,9 @@ public class LivreEmpruntDTO implements Serializable {
 	public void setNbreExemplaires(int nbreExemplaires) {
 		this.nbreExemplaires = nbreExemplaires;
 	}
+
+	@Override
+	public String toString() {
+		return "LivreEmpruntDTO [id=" + id + ", titre=" + titre + ", nbreExemplaires=" + nbreExemplaires + "]";
+	}
 }

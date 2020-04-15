@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,27 +38,25 @@ public class UsagerService {
 	private UsagerRepository usagerRepository;
 	
 	@Autowired
-	private EmpruntRepository empruntRepository;
-	
-	@Autowired
 	private ConversionUsager conversionUsager;
 	
-	@Autowired
-	private ConversionLivre conversionLivre;
-	
-	@Autowired
-	private ConversionEmprunt conversionEmprunt;
+	Logger logger = LoggerFactory.getLogger(UsagerService.class);
 	
 	public UsagerDTO createUsager(UsagerDTO usagerDTO) throws PasswordException {
+		
+		logger.info("Début de la méthode createUsager. Prend un argument de type UsagerDTO : " + usagerDTO.toString());
 		
 		String password = usagerDTO.getPassword();
 		String confirmPassword = usagerDTO.getConfirmPassword();
 		
-		if(password.length() < 8 || password.length() > 16) {
-			throw new PasswordException("Le mot de passe doit comporter entre 8 et 16 caractères.");
-		}
+//		if(password.length() < 8 || password.length() > 16) {
+//			throw new PasswordException("Le mot de passe doit comporter entre 8 et 16 caractères.");
+//		}
 		
 		if(!password.equals(confirmPassword)) {
+			
+			logger.warn("Méthode createUsager. Les deux mots de passe ne sont pas identiques");
+			
 			throw new PasswordException("Les deux mots de passe doivent être identiques.");
 		}
 		
@@ -71,19 +71,27 @@ public class UsagerService {
 		
 		this.usagerRepository.save(usager);
 		
+		
+		logger.warn("Fin de la méthode createUsager. Retourne un UsagerDTO : " + this.conversionUsager.convertToDto(usager).toString());
+		
 		return this.conversionUsager.convertToDto(usager);
 	}
 	
 	public UsagerDTO createAdmin(UsagerDTO usagerDTO) throws PasswordException {
 		
+		logger.info("Début de la méthode createAdmin. Prend en argument un UsagerDTO : " + usagerDTO.toString());
+		
 		String password = usagerDTO.getPassword();
 		String confirmPassword = usagerDTO.getConfirmPassword();
 		
-		if(password.length() < 8 || password.length() > 16) {
-			throw new PasswordException("Le mot de passe doit comporter entre 8 et 16 caractères.");
-		}
+//		if(password.length() < 8 || password.length() > 16) {
+//			throw new PasswordException("Le mot de passe doit comporter entre 8 et 16 caractères.");
+//		}
 		
 		if(!password.equals(confirmPassword)) {
+			
+			logger.warn("Méthode createAdmin. Les deux mots de passe ne sont pas identiques");
+			
 			throw new PasswordException("Les deux mots de passe doivent être identiques.");
 		}
 		
@@ -98,48 +106,81 @@ public class UsagerService {
 		
 		this.usagerRepository.save(usager);
 		
+		logger.info("Fin de la méthode createAdmin. Retourne un UsagerDTO : " + this.conversionUsager.convertToDto(usager).toString());
+		
 		return this.conversionUsager.convertToDto(usager);
 	}
 	
 	public UsagerGetDTO editRoleUsager(UsagerGetDTO usagerGetDTO) {
+		
+		logger.info("Début de la méthode editRoleUsager. Prend un argument de type UsagerGetDTO : " + usagerGetDTO.toString());
+		
 		Usager usager = this.findById(usagerGetDTO.getId());
-//		usager.setNom(usagerGetDTO.getNom());
-//		usager.setPrenom(usagerGetDTO.getPrenom());
-//		usager.setEmail(usagerGetDTO.getEmail());
 		usager.setRole(usagerGetDTO.getRole());
 		usager = this.usagerRepository.save(usager);
+		
+		logger.info("Fin de la méthode editRoleUsager. Retourne un UsagerGetDTO : " + this.conversionUsager.convertToGetDTO(usager).toString());
+		
 		return this.conversionUsager.convertToGetDTO(usager);
 	}
 	
 	public UsagerGetDTO editProfilUsager(UsagerGetDTO usagerGetDTO) {
+		
+		logger.info("Début de la méthode editProfilUsager. Prend un argument de type UsagerGetDTO : " + usagerGetDTO.toString());
+
 		Usager usager = this.findById(usagerGetDTO.getId());
 		usager.setPrenom(usagerGetDTO.getPrenom());
 		usager.setNom(usagerGetDTO.getNom());
 		usager.setEmail(usagerGetDTO.getEmail());
 		usager = this.usagerRepository.save(usager);
+		
+		logger.info("Fin de la méthode editProfilUsager. Retourne un UsagerGetDTO : " + this.conversionUsager.convertToGetDTO(usager).toString());
+
 		return this.conversionUsager.convertToGetDTO(usager);
 	}
 	
 	public Usager findById(Long id) {
+		
+		logger.info("Début de la méthode findById. Prend un argument de type Long : " + id);
+		logger.info("Fin de la méthode findById. Retourne un Usager.");
+		
 		return this.usagerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usager","id",id));
 	}
 	
 	public Usager findByEmail(String email) {
+		
+		logger.info("Début de la méthode findByEmail. Prend un argument de type String : " + email);
+		logger.info("Fin de la méthode findByEmail. Retourne un Usager.");
+		
 		return this.usagerRepository.findByEmail(email);
 	}
 	
 	public UsagerGetDTO getUsager(Long id) {
+		
+		logger.info("Début de la méthode getUsager. Prend un argument de type Long : " + id);
+		
 		Usager usager = this.findById(id);
+		
+		logger.info("Fin de la méthode getUsager. Retourne un UsagerGetDTO : " + this.conversionUsager.convertToGetDTO(usager).toString());
+		
 		return this.conversionUsager.convertToGetDTO(usager);
 	}
 	
 	public List<UsagerGetDTO> getAll(){
+		
+		logger.info("Début de la méthode getAll. Pas d'arguments.");
+		
 		List<Usager> usagers = this.usagerRepository.findAll();
+		
+		logger.info("Fin de la méthode getAll. Retourne une liste List<UsagerGetDTO>.");
+		
 		return usagers.stream().map(usager -> this.conversionUsager.convertToGetDTO(usager)).collect(Collectors.toList());
 	}
 	
 	public List<UsagerGetDTO> getAllIdNot(Long id){
-		//List<Usager> usagers = this.usagerRepository.findAllByOrderByNomAscAndIdNot(id);
+		
+		logger.info("Début de la méthode getAllIdNot. Prend un argument de type Long : " + id);
+		
 		List<Usager> usagers = this.usagerRepository.findByIdNot(id);
 		Collections.sort(usagers, new Comparator<Usager>() {
 			@Override
@@ -147,99 +188,9 @@ public class UsagerService {
 				return u1.getPrenom().compareTo(u2.getPrenom());
 			}
 		});
+		
+		logger.info("Fin de la méthode getAllIdNot. Retourne une liste List<UsagerGetDTO>.");
+		
 		return usagers.stream().map(usager -> this.conversionUsager.convertToGetDTO(usager)).collect(Collectors.toList());
 	}
-	
-	public UsagerDTO getUsagerDTOConnecte() {
-		return this.conversionUsager.convertToDto(this.authentification());
-	}
-	
-//	public List<EmpruntDTO> getEmprunts(){
-//		Usager usager = this.authentification();
-//		List<Emprunt> emprunts = usager.getListEmprunts();
-//		return emprunts.stream().map(emprunt -> this.conversionEmprunt.convertToDto(emprunt)).collect(Collectors.toList());
-//	}
-	
-//	public EmpruntDTO emprunter(EmpruntDTO empruntDTO) {
-//		Usager usager = this.authentification();
-//		Emprunt emprunt = this.conversionEmprunt.convertToEntity(empruntDTO);
-//		Date date = new Date();
-//		emprunt.setDateEmprunt(date);
-//		usager.addEmprunt(emprunt);
-//		this.editUsager(usager);
-//		return this.conversionEmprunt.convertToDto(emprunt);
-//	}
-	
-//	public void dejaEnpossession(EmpruntDTO empruntDTO) throws EmpruntException {
-//		Usager usager = this.authentification();
-//		Long livreId = empruntDTO.getLivre().getId();
-//		List<Emprunt> emprunts = usager.getListEmprunts();
-//		
-//		for(int i = 0;i < emprunts.size();i++) {
-//			if(emprunts.get(i).getLivre().getId().equals(livreId)) {
-//				throw new EmpruntException("Vous êtes déjà en possession de ce livre.");
-//			}
-//		}
-//	}
-	
-    public Usager authentification() {
-    	
-		UserDetails user =  (UserDetails) SecurityContextHolder
-				.getContext().getAuthentication().getPrincipal();
-		
-		Usager usager = this.findByEmail(user.getUsername());
-		return usager;
-    }
-	
-//	public List<EmpruntDTO> getEmprunts(Long id){
-//		Usager usager = this.findById(id);
-//	}
-	
-//	public EmpruntDTO emprunter(Usager usager, Livre livre) throws EmpruntException {
-//		
-//		
-//		if(livre.getNbreExemplaires() <= 0) {
-//			throw new EmpruntException("Ce livre n'est pas disponible pour le moment.");
-//		}
-//		
-//		List<Emprunt> emprunts = usager.getListEmprunts();
-//		
-//		for(int i = 0;i < emprunts.size();i++) {
-//			if(emprunts.get(i).getLivre().getId().equals(livre.getId())) {
-//				throw new EmpruntException("Vous avez déjà emprunter ce livre.");
-//			}
-//		}
-//		
-//		livre.setNbreExemplaires(livre.getNbreExemplaires() - 1);
-//		
-//		Emprunt emprunt = new Emprunt();
-//		emprunt.setLivre(livre);
-//		
-//		Date date = new Date();
-//		emprunt.setDateEmprunt(date);
-//		
-//		usager.addEmprunt(emprunt);
-//		
-//		this.editUsager(usager);
-//		System.out.println("id emprunt : " + emprunt.getId());
-//		
-//		return this.conversionEmprunt.convertToDto(emprunt);
-//	}
-	
-//	public Usager rendre(Usager usager, Livre livre) {
-//		
-//		List<Emprunt> emprunts = usager.getListEmprunts();
-//		
-//		for(int i = 0;i < emprunts.size();i++) {
-//			if(emprunts.get(i).getLivre().getId().equals(livre.getId())) {
-//				usager.deleteEmprunt(emprunts.get(i));
-//				livre.setNbreExemplaires(livre.getNbreExemplaires() + 1);
-//				break;
-//			}
-//		}
-//		
-//		this.editUsager(usager);
-//		
-//		return usager;
-//	}
 }

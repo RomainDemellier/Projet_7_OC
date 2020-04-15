@@ -83,6 +83,7 @@ public class EmpruntDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "EmpruntDTO [id=" + id + ", livre=" + livre + ", dateEmprunt=" + dateEmprunt + ", actif=" + actif + "]";
+		return "EmpruntDTO [id=" + id + ", livre=" + livre + ", usager=" + usager + ", dateEmprunt=" + dateEmprunt
+				+ ", dateRetour=" + dateRetour + ", prolonge=" + prolonge + ", actif=" + actif + "]";
 	}
 }

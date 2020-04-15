@@ -47,7 +47,7 @@ public class Usager implements Serializable {
 	private String email;
 	
 	@NotBlank
-	//@Size(min = 8, max = 16, message = "Le password doit être compris entre 8 et 16 caractères.")
+	@Size(min = 8, max = 16, message = "Le password doit être compris entre 8 et 16 caractères.")
 	private String password;
 	
 	@NotBlank
@@ -118,7 +118,7 @@ public class Usager implements Serializable {
 	@Override
 	public String toString() {
 		return "Usager [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", password="
-				+ password + ", role=" + role + "]";
+				 + ", role=" + role + "]";
 	}
 	
 //	public List<Emprunt> getListEmprunts() {

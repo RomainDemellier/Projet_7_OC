@@ -65,4 +65,10 @@ public class LivreDTO {
 	public void setFullNameAuteur(String fullNameAuteur) {
 		this.fullNameAuteur = fullNameAuteur;
 	}
+
+	@Override
+	public String toString() {
+		return "LivreDTO [id=" + id + ", titre=" + titre + ", auteur=" + auteur + ", genre=" + genre
+				+ ", nbreExemplaires=" + nbreExemplaires + ", fullNameAuteur=" + fullNameAuteur + "]";
+	}
 }

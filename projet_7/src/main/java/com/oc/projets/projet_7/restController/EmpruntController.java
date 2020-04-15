@@ -12,6 +12,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,9 +51,6 @@ public class EmpruntController {
 	@Autowired
 	private EmpruntService empruntService;
 	
-	@Autowired
-	private EmpruntRepository empruntRepository;
-	
 	/* Action d'emprunter un livre pour un usager avec l'id de l'usager et l'id du livre 
 	 * On décrémente le nombre d'exemplaires du livre et on save le livre
 	 * */
@@ -63,11 +61,13 @@ public class EmpruntController {
 	}
 	
 	@GetMapping("/emprunt")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public List<EmpruntDTO> getListEmprunts(){
 		return this.empruntService.getListEmprunts();
 	}
 	
 	@PostMapping("/emprunt/create")
+	@PreAuthorize("isAuthenticated()")
 	public ResponseEntity<EmpruntDTO> emprunter(@RequestBody EmpruntDTO empruntDTO) {
 		
 		//System.out.println(this.empruntService.create(empruntDTO).toString());
@@ -84,6 +84,7 @@ public class EmpruntController {
 	}
 	
 	@PutMapping("/emprunt/prolonger/{id}")
+	@PreAuthorize("isAuthenticated()")
 	public ResponseEntity<EmpruntDTO> prolonger(@PathVariable(value = "id") Long empruntId) {
 		try{
 			return ResponseEntity.ok(this.empruntService.prolonger(empruntId));
@@ -94,24 +95,10 @@ public class EmpruntController {
 	}
 	
 	@DeleteMapping("/emprunt/delete/{id}")
+	@PreAuthorize("isAuthenticated()")
 	public ResponseEntity<EmpruntDTO> rendre(@PathVariable(value = "id") Long empruntId) {
 		Emprunt emprunt = this.empruntService.findById(empruntId);
 		this.livreService.rendre(emprunt.getLivre());
 		return ResponseEntity.ok(this.empruntService.delete(emprunt));
-	}
-
-	@GetMapping("/testDate")
-	public void test() {
-		LocalDate date = LocalDate.now();
-		date = date.plusDays(-3);
-		System.out.println(date);
-//		List<Emprunt> emprunts = this.empruntRepository.findAll();
-//		for(int i = 0;i < emprunts.size();i++) {
-//			//System.out.println(emprunts.get(i).getDateEmprunt());
-//			Emprunt emprunt  = emprunts.get(i);
-//			date = emprunt.getDateEmprunt();
-//			emprunt.setDateEmprunt(date);
-//			this.empruntRepository.save(emprunt);
-//		}
 	}
 }

@@ -58,5 +58,9 @@ public class UsagerDTO implements Serializable {
 	public void setConfirmPassword(String confirmPassword) {
 		this.confirmPassword = confirmPassword;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "UsagerDTO [nom=" + nom + ", prenom=" + prenom + ", email=" + email + "]";
+	}
 }
