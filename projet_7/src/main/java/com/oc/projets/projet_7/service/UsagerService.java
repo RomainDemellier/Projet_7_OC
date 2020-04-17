@@ -49,9 +49,9 @@ public class UsagerService {
 		String password = usagerDTO.getPassword();
 		String confirmPassword = usagerDTO.getConfirmPassword();
 		
-//		if(password.length() < 8 || password.length() > 16) {
-//			throw new PasswordException("Le mot de passe doit comporter entre 8 et 16 caractères.");
-//		}
+		if(password.length() < 8 || password.length() > 16) {
+			throw new PasswordException("Le mot de passe doit comporter entre 8 et 16 caractères.");
+		}
 		
 		if(!password.equals(confirmPassword)) {
 			
@@ -84,9 +84,9 @@ public class UsagerService {
 		String password = usagerDTO.getPassword();
 		String confirmPassword = usagerDTO.getConfirmPassword();
 		
-//		if(password.length() < 8 || password.length() > 16) {
-//			throw new PasswordException("Le mot de passe doit comporter entre 8 et 16 caractères.");
-//		}
+		if(password.length() < 8 || password.length() > 16) {
+			throw new PasswordException("Le mot de passe doit comporter entre 8 et 16 caractères.");
+		}
 		
 		if(!password.equals(confirmPassword)) {
 			
@@ -117,6 +117,7 @@ public class UsagerService {
 		
 		Usager usager = this.findById(usagerGetDTO.getId());
 		usager.setRole(usagerGetDTO.getRole());
+		System.out.println("password : " + usager.getPassword().length());
 		usager = this.usagerRepository.save(usager);
 		
 		logger.info("Fin de la méthode editRoleUsager. Retourne un UsagerGetDTO : " + this.conversionUsager.convertToGetDTO(usager).toString());
