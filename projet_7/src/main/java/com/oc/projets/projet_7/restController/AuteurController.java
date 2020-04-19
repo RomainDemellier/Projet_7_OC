@@ -3,6 +3,7 @@ package com.oc.projets.projet_7.restController;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,17 +29,17 @@ public class AuteurController {
 	/* Créer un auteur */
 	@PostMapping("/auteur/create")
 	@PreAuthorize("hasAuthority('ADMIN')")
-	public Auteur createAuteur(@RequestBody Auteur auteur) {
-		return this.auteurService.createAuteur(auteur);
+	public ResponseEntity<Auteur> createAuteur(@RequestBody Auteur auteur) {
+		return ResponseEntity.ok(this.auteurService.createAuteur(auteur));
 	}
 	
 	@GetMapping("/auteur")
-	public List<AuteurDTO> getAll(){
-		return this.auteurService.findAll();
+	public ResponseEntity<List<AuteurDTO>> getAll(){
+		return ResponseEntity.ok(this.auteurService.findAll());
 	}
 	
 	@GetMapping("/auteur/{id}")
-	public AuteurDTO getById(@PathVariable(value = "id") Long auteurId) {
-		return this.auteurService.findById(auteurId);
+	public ResponseEntity<AuteurDTO> getById(@PathVariable(value = "id") Long auteurId) {
+		return ResponseEntity.ok(this.auteurService.findById(auteurId));
 	}
 }

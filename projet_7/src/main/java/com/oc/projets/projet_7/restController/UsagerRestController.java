@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.constraints.Size;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,16 +63,16 @@ public class UsagerRestController {
 	
 	@GetMapping("/usager")
 	@PreAuthorize("hasAuthority('ADMIN')")
-	public List<UsagerGetDTO> getAllUsagers(){
-		return this.usagerService.getAllIdNot(this.usagerConnecteService.getUsagerConnecte().getId());
+	public ResponseEntity<List<UsagerGetDTO>> getAllUsagers(){
+		return ResponseEntity.ok(this.usagerService.getAllIdNot(this.usagerConnecteService.getUsagerConnecte().getId()));
 	}
 	
 	/* Retourne un usager en fonction de son id */
 	@GetMapping("/usager/{id}")
-	public UsagerGetDTO findById(@PathVariable(value = "id") Long usagerId) {
+	public ResponseEntity<UsagerGetDTO> findById(@PathVariable(value = "id") Long usagerId) {
 //		Usager usager = this.usagerService.findById(usagerId);
 //		return this.conversionUsager.convertToGetDTO(usager);
-		return this.usagerService.getUsager(usagerId);
+		return ResponseEntity.ok(this.usagerService.getUsager(usagerId));
 	}
 	
 	/* Créer un usager */
@@ -105,24 +107,25 @@ public class UsagerRestController {
 	
 	@PutMapping("/usager/update/role")
 	@PreAuthorize("hasAuthority('ADMIN')")
-	public UsagerGetDTO editUsager(@RequestBody UsagerGetDTO usagerGetDTO) {
-		return this.usagerService.editRoleUsager(usagerGetDTO);
+	public ResponseEntity<UsagerGetDTO> editUsager(@RequestBody UsagerGetDTO usagerGetDTO) {
+		return ResponseEntity.ok(this.usagerService.editRoleUsager(usagerGetDTO));
 	}
 	
 	@PutMapping("/usager/update/profil")
 	@PreAuthorize("isAuthenticated()")
-	public UsagerGetDTO editProfilUsager(@RequestBody UsagerGetDTO usagerGetDTO) {
-		return this.usagerService.editProfilUsager(usagerGetDTO);
+	public ResponseEntity<UsagerGetDTO> editProfilUsager(@RequestBody UsagerGetDTO usagerGetDTO) {
+		return ResponseEntity.ok(this.usagerService.editProfilUsager(usagerGetDTO));
 	}
 	
 	@GetMapping("/usager/emprunts")
 	@PreAuthorize("isAuthenticated()")
-	public List<EmpruntDTO> getEmprunts(){
-		return this.empruntService.getEmpruntsUsagerConnecte();
+	public ResponseEntity<List<EmpruntDTO>> getEmprunts(){
+		System.out.println("Size : " + this.empruntService.getEmpruntsUsagerConnecte().size());
+		return ResponseEntity.ok(this.empruntService.getEmpruntsUsagerConnecte());
 	}
 	
 	@GetMapping("/usager/connecte")
-	public UsagerGetDTO getUsagerConnecte() {
-		return this.usagerConnecteService.getUsagerConnecte();
+	public ResponseEntity<UsagerGetDTO> getUsagerConnecte() {
+		return ResponseEntity.ok(this.usagerConnecteService.getUsagerConnecte());
 	}
 }

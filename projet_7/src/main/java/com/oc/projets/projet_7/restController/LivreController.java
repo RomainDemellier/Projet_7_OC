@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,28 +36,28 @@ public class LivreController {
 	
 	/* Retourne la liste de tous les livres */
 	@GetMapping("/livre")
-	public List<LivreDTO> getAll(){
-		return this.livreService.getAllLivres();
+	public ResponseEntity<List<LivreDTO>> getAll(){
+		return ResponseEntity.ok(this.livreService.getAllLivres());
 	}
 	
 	/* Retourne un livre en fonction de son id */
 	@GetMapping("/livre/{id}")
-	public LivreDTO getById(@PathVariable(value = "id") Long livreId) {
+	public ResponseEntity<LivreDTO> getById(@PathVariable(value = "id") Long livreId) {
 //		Livre livre = this.livreService.findById(livreId);
 //		return this.conversionLivre.convertToDto(livre);
-		return this.livreService.getLivre(livreId);
+		return ResponseEntity.ok(this.livreService.getLivre(livreId));
 	}
 	
 	/* Créer un livre */
 	@PostMapping("/livre/create")
 	@PreAuthorize("hasAuthority('ADMIN')")
-	public Livre createLivre(@RequestBody LivreCreationDTO livre) {
-		return this.livreService.createLivre(livre);
+	public ResponseEntity<Livre> createLivre(@RequestBody LivreCreationDTO livre) {
+		return ResponseEntity.ok(this.livreService.createLivre(livre));
 	}
 	
 	@PutMapping("/livre/editNbreExemplaires")
 	@PreAuthorize("hasAuthority('ADMIN')")
-	public LivreDTO editNbreExemplaires(@RequestBody LivreDTO livreDTO) {
-		return this.livreService.editNbreExemplaires(livreDTO);
+	public ResponseEntity<LivreDTO> editNbreExemplaires(@RequestBody LivreDTO livreDTO) {
+		return ResponseEntity.ok(this.livreService.editNbreExemplaires(livreDTO));
 	}
 }

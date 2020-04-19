@@ -56,14 +56,14 @@ public class EmpruntController {
 	 * */
 	
 	@GetMapping("/emprunt/{id}")
-	public EmpruntDTO getEmprunt(@PathVariable(value = "id") Long empruntId) {
-		return this.empruntService.getById(empruntId);
+	public ResponseEntity<EmpruntDTO> getEmprunt(@PathVariable(value = "id") Long empruntId) {
+		return ResponseEntity.ok(this.empruntService.getById(empruntId));
 	}
 	
 	@GetMapping("/emprunt")
 	@PreAuthorize("hasAuthority('ADMIN')")
-	public List<EmpruntDTO> getListEmprunts(){
-		return this.empruntService.getListEmprunts();
+	public ResponseEntity<List<EmpruntDTO>> getListEmprunts(){
+		return ResponseEntity.ok(this.empruntService.getListEmprunts());
 	}
 	
 	@PostMapping("/emprunt/create")
