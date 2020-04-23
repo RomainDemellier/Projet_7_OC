@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -43,9 +44,12 @@ public class LivreController {
 	/* Retourne un livre en fonction de son id */
 	@GetMapping("/livre/{id}")
 	public ResponseEntity<LivreDTO> getById(@PathVariable(value = "id") Long livreId) {
-//		Livre livre = this.livreService.findById(livreId);
-//		return this.conversionLivre.convertToDto(livre);
-		return ResponseEntity.ok(this.livreService.getLivre(livreId));
+		LivreDTO livreDTO = this.livreService.getLivre(livreId);
+		if(livreDTO != null) {
+			return ResponseEntity.ok(livreDTO);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 	
 	/* Créer un livre */

@@ -141,7 +141,8 @@ public class EmpruntService {
 		logger.info("Début de la méthode getEmpruntsUsagerConnecte. Pas d'arguments");
 		
 		Usager usager = this.usagerConnecteService.authentification();
-		List<Emprunt> emprunts = this.empruntRepository.findByUsagerAndActif(usager, true);
+//		List<Emprunt> emprunts = this.empruntRepository.findByUsagerAndActif(usager, true);
+		List<Emprunt> emprunts = this.empruntRepository.findByUsagerAndActifOrderByDateEmpruntAsc(usager, true);
 		
 		logger.info("Fin de la méthode getEmpruntsConnecte. Retourne une liste d'emprunts List<Emprunt>");
 		
@@ -163,6 +164,12 @@ public class EmpruntService {
 			}
 		}
 		logger.info("Fin de la méthode dejaEnPossession. Ne retourne rien.");
+	}
+	
+	public List<EmpruntDTO> getEmpruntsToday(){
+		LocalDate date = LocalDate.now();
+		List<Emprunt> emprunts = this.empruntRepository.findByDateEmpruntAndActif(date, true);
+		return emprunts.stream().map(emprunt -> this.conversionEmprunt.convertToDto(emprunt)).collect(Collectors.toList());
 	}
 	
 	private Date dateRetour(Date date, int nbreDays) {

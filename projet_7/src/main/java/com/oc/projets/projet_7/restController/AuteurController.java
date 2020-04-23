@@ -3,6 +3,7 @@ package com.oc.projets.projet_7.restController;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -40,6 +41,11 @@ public class AuteurController {
 	
 	@GetMapping("/auteur/{id}")
 	public ResponseEntity<AuteurDTO> getById(@PathVariable(value = "id") Long auteurId) {
-		return ResponseEntity.ok(this.auteurService.findById(auteurId));
+		AuteurDTO auteurDTO = this.auteurService.findById(auteurId);
+		if(auteurDTO != null) {
+			return ResponseEntity.ok(auteurDTO);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 }

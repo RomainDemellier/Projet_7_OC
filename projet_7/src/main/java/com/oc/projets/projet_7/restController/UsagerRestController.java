@@ -70,9 +70,13 @@ public class UsagerRestController {
 	/* Retourne un usager en fonction de son id */
 	@GetMapping("/usager/{id}")
 	public ResponseEntity<UsagerGetDTO> findById(@PathVariable(value = "id") Long usagerId) {
-//		Usager usager = this.usagerService.findById(usagerId);
-//		return this.conversionUsager.convertToGetDTO(usager);
-		return ResponseEntity.ok(this.usagerService.getUsager(usagerId));
+		UsagerGetDTO usagerGetDTO = this.usagerService.getUsager(usagerId);
+		if(usagerGetDTO != null) {
+			return ResponseEntity.ok(usagerGetDTO);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
 	}
 	
 	/* Créer un usager */

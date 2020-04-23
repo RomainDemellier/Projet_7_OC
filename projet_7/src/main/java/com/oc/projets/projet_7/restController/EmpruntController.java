@@ -39,7 +39,7 @@ import com.oc.projets.projet_7.service.UsagerService;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api")
+@RequestMapping("/api/emprunt")
 public class EmpruntController {
 
 	@Autowired
@@ -55,18 +55,23 @@ public class EmpruntController {
 	 * On décrémente le nombre d'exemplaires du livre et on save le livre
 	 * */
 	
-	@GetMapping("/emprunt/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<EmpruntDTO> getEmprunt(@PathVariable(value = "id") Long empruntId) {
-		return ResponseEntity.ok(this.empruntService.getById(empruntId));
+		EmpruntDTO empruntDTO = this.empruntService.getById(empruntId);
+		if(empruntDTO != null) {
+			return ResponseEntity.ok(empruntDTO);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 	
-	@GetMapping("/emprunt")
+	@GetMapping("")
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<List<EmpruntDTO>> getListEmprunts(){
 		return ResponseEntity.ok(this.empruntService.getListEmprunts());
 	}
 	
-	@PostMapping("/emprunt/create")
+	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
 	public ResponseEntity<EmpruntDTO> emprunter(@RequestBody EmpruntDTO empruntDTO) {
 		
@@ -83,7 +88,7 @@ public class EmpruntController {
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(empruntDTO);
 	}
 	
-	@PutMapping("/emprunt/prolonger/{id}")
+	@PutMapping("/prolonger/{id}")
 	@PreAuthorize("isAuthenticated()")
 	public ResponseEntity<EmpruntDTO> prolonger(@PathVariable(value = "id") Long empruntId) {
 		try{
@@ -94,11 +99,16 @@ public class EmpruntController {
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
 	}
 	
-	@DeleteMapping("/emprunt/delete/{id}")
+	@DeleteMapping("/delete/{id}")
 	@PreAuthorize("isAuthenticated()")
 	public ResponseEntity<EmpruntDTO> rendre(@PathVariable(value = "id") Long empruntId) {
 		Emprunt emprunt = this.empruntService.findById(empruntId);
 		this.livreService.rendre(emprunt.getLivre());
 		return ResponseEntity.ok(this.empruntService.delete(emprunt));
+	}
+	
+	@GetMapping("/batch")
+	public ResponseEntity<List<EmpruntDTO>> getEmpruntsToday(){
+		return ResponseEntity.ok(this.empruntService.getEmpruntsToday());
 	}
 }
