@@ -37,7 +37,7 @@ import com.oc.projets.projet_7.service.UsagerService;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api")
+@RequestMapping("/api/usager")
 public class UsagerRestController {
 
 	@Autowired
@@ -55,20 +55,14 @@ public class UsagerRestController {
 	@Autowired
 	private ConversionEmprunt conversionEmprunt;
 	
-	/* Retourne la liste de tous les usagers */
-//	@GetMapping("/usager")
-//	public List<UsagerGetDTO> getAllUsagers(){
-//		return this.usagerService.getAll();
-//	}
-	
-	@GetMapping("/usager")
+	@GetMapping("")
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<List<UsagerGetDTO>> getAllUsagers(){
 		return ResponseEntity.ok(this.usagerService.getAllIdNot(this.usagerConnecteService.getUsagerConnecte().getId()));
 	}
 	
 	/* Retourne un usager en fonction de son id */
-	@GetMapping("/usager/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<UsagerGetDTO> findById(@PathVariable(value = "id") Long usagerId) {
 		UsagerGetDTO usagerGetDTO = this.usagerService.getUsager(usagerId);
 		if(usagerGetDTO != null) {
@@ -80,55 +74,49 @@ public class UsagerRestController {
 	}
 	
 	/* Créer un usager */
-	@PostMapping("/usager/create")
+	@PostMapping("/create")
 	public ResponseEntity<UsagerDTO> createUsager(@RequestBody UsagerDTO usagerDTO) {
-		//Usager usager = this.conversionUsager.convertToEntity(usagerDTO);
 		try{
 			usagerDTO = this.usagerService.createUsager(usagerDTO);
 			return ResponseEntity.ok(usagerDTO);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		
-		//return this.conversionUsager.convertToDto(usager);
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(usagerDTO);
 	}
 	
-	@PostMapping("/usager/createAdmin")
+	@PostMapping("/createAdmin")
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<UsagerDTO> createAdmin(@RequestBody UsagerDTO usagerDTO) {
-		//Usager usager = this.conversionUsager.convertToEntity(usagerDTO);
 		try{
 			usagerDTO = this.usagerService.createAdmin(usagerDTO);
 			return ResponseEntity.ok(usagerDTO);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		
-		//return this.conversionUsager.convertToDto(usager);
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(usagerDTO);
 	}
 	
-	@PutMapping("/usager/update/role")
+	@PutMapping("/update/role")
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<UsagerGetDTO> editUsager(@RequestBody UsagerGetDTO usagerGetDTO) {
 		return ResponseEntity.ok(this.usagerService.editRoleUsager(usagerGetDTO));
 	}
 	
-	@PutMapping("/usager/update/profil")
+	@PutMapping("/update/profil")
 	@PreAuthorize("isAuthenticated()")
 	public ResponseEntity<UsagerGetDTO> editProfilUsager(@RequestBody UsagerGetDTO usagerGetDTO) {
 		return ResponseEntity.ok(this.usagerService.editProfilUsager(usagerGetDTO));
 	}
 	
-	@GetMapping("/usager/emprunts")
+	@GetMapping("/emprunts")
 	@PreAuthorize("isAuthenticated()")
 	public ResponseEntity<List<EmpruntDTO>> getEmprunts(){
 		System.out.println("Size : " + this.empruntService.getEmpruntsUsagerConnecte().size());
 		return ResponseEntity.ok(this.empruntService.getEmpruntsUsagerConnecte());
 	}
 	
-	@GetMapping("/usager/connecte")
+	@GetMapping("/connecte")
 	public ResponseEntity<UsagerGetDTO> getUsagerConnecte() {
 		return ResponseEntity.ok(this.usagerConnecteService.getUsagerConnecte());
 	}

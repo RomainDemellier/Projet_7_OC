@@ -21,25 +21,25 @@ import com.oc.projets.projet_7.service.AuteurService;
 
 @RestController
 @CrossOrigin
-@RequestMapping("api")
+@RequestMapping("api/auteur")
 public class AuteurController {
 
 	@Autowired
 	private AuteurService auteurService;
 	
 	/* Créer un auteur */
-	@PostMapping("/auteur/create")
+	@PostMapping("/create")
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<Auteur> createAuteur(@RequestBody Auteur auteur) {
 		return ResponseEntity.ok(this.auteurService.createAuteur(auteur));
 	}
 	
-	@GetMapping("/auteur")
+	@GetMapping("")
 	public ResponseEntity<List<AuteurDTO>> getAll(){
 		return ResponseEntity.ok(this.auteurService.findAll());
 	}
 	
-	@GetMapping("/auteur/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<AuteurDTO> getById(@PathVariable(value = "id") Long auteurId) {
 		AuteurDTO auteurDTO = this.auteurService.findById(auteurId);
 		if(auteurDTO != null) {

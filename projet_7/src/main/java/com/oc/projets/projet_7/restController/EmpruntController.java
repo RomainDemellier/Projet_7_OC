@@ -51,10 +51,6 @@ public class EmpruntController {
 	@Autowired
 	private EmpruntService empruntService;
 	
-	/* Action d'emprunter un livre pour un usager avec l'id de l'usager et l'id du livre 
-	 * On décrémente le nombre d'exemplaires du livre et on save le livre
-	 * */
-	
 	@GetMapping("/{id}")
 	public ResponseEntity<EmpruntDTO> getEmprunt(@PathVariable(value = "id") Long empruntId) {
 		EmpruntDTO empruntDTO = this.empruntService.getById(empruntId);
@@ -75,12 +71,10 @@ public class EmpruntController {
 	@PreAuthorize("isAuthenticated()")
 	public ResponseEntity<EmpruntDTO> emprunter(@RequestBody EmpruntDTO empruntDTO) {
 		
-		//System.out.println(this.empruntService.create(empruntDTO).toString());
 		try {
 			this.empruntService.dejaEnPossession(empruntDTO);
 			this.livreService.estDisponible(empruntDTO.getLivre().getId());
 			return ResponseEntity.ok(this.empruntService.create(empruntDTO));
-			//return this.empruntService.create(empruntDTO);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

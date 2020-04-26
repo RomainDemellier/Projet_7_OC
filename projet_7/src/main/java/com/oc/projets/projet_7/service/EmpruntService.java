@@ -32,9 +32,6 @@ public class EmpruntService {
 	
 	Logger logger = LoggerFactory.getLogger(EmpruntService.class);
 	
-//	@Autowired
-//	private UsagerService usagerService;
-	
 	@Autowired
 	private LivreService livreService;
 	
@@ -64,7 +61,7 @@ public class EmpruntService {
 		
 		logger.info("Début de getListEmprunts pas d'arguments");
 		
-		List<Emprunt> emprunts = this.empruntRepository.findAll();
+		List<Emprunt> emprunts = this.empruntRepository.findAllByOrderByDateEmpruntDesc();
 		
 		logger.info("Fin de getListEmprunts. Retourne une liste d'emprunts.");
 		
@@ -121,7 +118,6 @@ public class EmpruntService {
 		Emprunt emprunt = this.findById(empruntId);
 		if(!emprunt.getProlonge()) {
 			emprunt.setProlonge(true);
-			//emprunt.setDateRetour(this.dateRetour(emprunt.getDateEmprunt(), 56));
 			emprunt.setDateRetour(emprunt.getDateEmprunt().plusDays(56));
 			this.empruntRepository.save(emprunt);
 			
@@ -141,7 +137,6 @@ public class EmpruntService {
 		logger.info("Début de la méthode getEmpruntsUsagerConnecte. Pas d'arguments");
 		
 		Usager usager = this.usagerConnecteService.authentification();
-//		List<Emprunt> emprunts = this.empruntRepository.findByUsagerAndActif(usager, true);
 		List<Emprunt> emprunts = this.empruntRepository.findByUsagerAndActifOrderByDateEmpruntAsc(usager, true);
 		
 		logger.info("Fin de la méthode getEmpruntsConnecte. Retourne une liste d'emprunts List<Emprunt>");

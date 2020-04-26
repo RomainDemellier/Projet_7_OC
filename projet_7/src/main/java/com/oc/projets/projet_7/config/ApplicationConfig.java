@@ -11,17 +11,4 @@ public class ApplicationConfig {
 	public ModelMapper modelMapper() {
 	    return new ModelMapper();
 	}
-	
-//	@Bean
-//	JobLauncher jobLauncher() {
-//		return new JobLauncher() {
-//			
-//			@Override
-//			public JobExecution run(Job job, JobParameters jobParameters) throws JobExecutionAlreadyRunningException,
-//					JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
-//				// TODO Auto-generated method stub
-//				return null;
-//			}
-//		};
-//	}
 }

@@ -17,8 +17,6 @@ public class UsagerGetDTO implements Serializable {
 	private String email;
 	
 	private String role;
-	
-//	private List<Emprunt> listEmprunts;
 
 	public UsagerGetDTO() {
 	}

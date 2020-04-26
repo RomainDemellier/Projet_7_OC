@@ -47,14 +47,10 @@ public class Usager implements Serializable {
 	private String email;
 	
 	@NotBlank
-	//@Size(min = 8, max = 16, message = "Le password doit être compris entre 8 et 16 caractères.")
 	private String password;
 	
 	@NotBlank
 	private String role = "USER";
-	
-//	@OneToMany(mappedBy = "usager", cascade = CascadeType.ALL, orphanRemoval = true)
-//	private List<Emprunt> listEmprunts = new ArrayList<Emprunt>();
 
 	public Usager() {
 		super();

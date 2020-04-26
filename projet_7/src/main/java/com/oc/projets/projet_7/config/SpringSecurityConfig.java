@@ -51,41 +51,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		//        http.csrf().disable().authorizeRequests().antMatchers("/api/authenticated/**").authenticated().anyRequest().permitAll();
-
 		http
 		.csrf().disable()
-		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		.and()
-		.authorizeRequests()
-		.antMatchers(HttpMethod.POST,"/authenticate").permitAll()
-		.antMatchers(HttpMethod.POST,"/api/usager/create").permitAll()
-//		.antMatchers(HttpMethod.PUT,"/api/emprunt/prolonger").authenticated()
-		.antMatchers(HttpMethod.GET,"/api/hello").permitAll()
-		.antMatchers(HttpMethod.POST,"/api/livre/create").permitAll()
-		.antMatchers(HttpMethod.POST,"/api/auteur/create").permitAll()
-//		.antMatchers(HttpMethod.GET,"/api/auteur/**").permitAll()
-		//.antMatchers(HttpMethod.GET,"/api/auteur/{id}").permitAll()
-		.antMatchers(HttpMethod.GET,"/api/authenticated/hello").authenticated()
-		.antMatchers(HttpMethod.GET,"/api/admin/hello").hasAuthority("ADMIN")
-//		.anyRequest().authenticated();
-		.anyRequest().permitAll();
-//		.and()
-//		.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
-//		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 		http.cors();
 	}
-
-	//    @Override
-	//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-	//        /*ShaPasswordEncoder encoder = new ShaPasswordEncoder();
-	//        auth.userDetailsService(customUserDetailsService).passwordEncoder(encoder);*/
-	//        //auth.inMemoryAuthentication().withUser("user")
-	//
-	//        auth.userDetailsService(usagerDetailsSevice).passwordEncoder(new BCryptPasswordEncoder());
-	//    }
 
 	@Bean
 	public BCryptPasswordEncoder encodePWD(){

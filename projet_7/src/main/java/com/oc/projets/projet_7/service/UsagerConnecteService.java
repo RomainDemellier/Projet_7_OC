@@ -17,7 +17,6 @@ import net.bytebuddy.asm.Advice.This;
 @Service
 public class UsagerConnecteService {
 
-	//@Autowired
 	private Usager usager = null;
 	
 	@Autowired

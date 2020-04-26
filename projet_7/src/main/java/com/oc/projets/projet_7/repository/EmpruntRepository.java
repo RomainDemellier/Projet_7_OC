@@ -24,9 +24,5 @@ public interface EmpruntRepository extends JpaRepository<Emprunt, Long> {
 	
 	List<Emprunt> findByDateEmpruntAndActif(LocalDate date, Boolean actif);
 	
-	@Query(value = "SELECT * FROM emprunt WHERE actif = true AND "
-			+ "EXTRACT(YEAR FROM (NOW()-interval '2 day')) = EXTRACT(YEAR FROM date_emprunt) AND "
-			+ "EXTRACT(MONTH FROM (NOW()-interval '2 day')) = EXTRACT(MONTH FROM date_emprunt) AND "
-			+ "EXTRACT(DAY FROM (NOW()-interval '2 day')) = EXTRACT(DAY FROM date_emprunt)", nativeQuery = true)
-	List<Emprunt> listForBatch();
+	List<Emprunt> findAllByOrderByDateEmpruntDesc();
 }
