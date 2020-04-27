@@ -23,6 +23,8 @@ mvn package
 
 Il vous faut maintenant récupérer le fichier projet_7-0.0.1-SNAPSHOT.war. Sous la racine de l'application il y a un dossier nommé projet_7. Dans ce dossier se trouve un dossier nommé target dans lequel se trouve le fichier projet_7-0.0.1-SNAPSHOT.war. Il vous faut copier ce fichier et le collez dans un dossier nommé webapps. Ce dossier se trouve dans le dossier nommé apache-tomcat. Le nom de ce dossier peut varier selon les versions.
 
+Pour pouvoir utiliser le jeu de données que j'ai mis en ligne, il vous faudra créer une base de données nommée projet-7-bibliotheque sur un serveur PostgreSQL. Il vous suffira ensuite d'importer à l'aide du fichier structure-et-donnees.sql, qui se trouve à la racine de ce repository, le jeu de données.
+
 Pour continuer rendez vous sur la page https://github.com/RomainDemellier/Projet_7_OC_Batch et suivez les instructions du README.md.
 
 
