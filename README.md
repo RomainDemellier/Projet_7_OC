@@ -1,11 +1,10 @@
-# Projet_7_OC
-Projet 7 OC de DA
+#Projet 7 OC de DA
 
-Cette application a été testée avec la version 8.5 de tomcat.
+Cette application a été testée avec la version **8.5 de tomcat**.
 
 Commencez par clonez le code de l'application en tapant en ligne de commande :
 
-git clone https://github.com/RomainDemellier/Projet_7_OC.git
+```git clone https://github.com/RomainDemellier/Projet_7_OC.git```
 
 Vous aurez besoin de Maven pour faire fonctionner cette application. Vous pouvez télécharger Maven à cette adresse : https://maven.apache.org/download.cgi.
 
@@ -19,7 +18,7 @@ OS name: "windows 10", version: "10.0", arch: "amd64", family: "windows"
 
 Pour builder l'application mettez vous sous la racine de l'application (cd Projet_7_OC/projet_7/). Ensuite tapez la commande suivante dans votre terminal :
 
-mvn package
+```mvn package```
 
 Il vous faut maintenant récupérer le fichier projet_7-0.0.1-SNAPSHOT.war. Sous la racine de l'application il y a un dossier nommé projet_7. Dans ce dossier se trouve un dossier nommé target dans lequel se trouve le fichier projet_7-0.0.1-SNAPSHOT.war. Il vous faut copier ce fichier et le collez dans un dossier nommé webapps. Ce dossier se trouve dans le dossier nommé apache-tomcat. Le nom de ce dossier peut varier selon les versions.
 
