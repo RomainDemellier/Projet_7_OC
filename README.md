@@ -10,13 +10,19 @@ git clone https://github.com/RomainDemellier/Projet_7_OC.git
 
 Vous aurez besoin de Maven pour faire fonctionner cette application. Vous pouvez télécharger Maven à cette adresse : https://maven.apache.org/download.cgi.
 
-Après avoir téléchargé Maven tapez mvn --version en ligne de commande pour s'assurer que Maven a bien été téléchargé. Si vous voyez quelquechose comme suit c'est bon :
+Après avoir téléchargé Maven tapez 
+```
+mvn --version
+```
+en ligne de commande pour s'assurer que Maven a bien été téléchargé. Si vous voyez quelquechose comme suit c'est bon :
 
+```
 Apache Maven 3.6.3 (cecedd343002696d0abb50b32b541b8a6ba2883f)
 Maven home: D:\apache-maven-3.6.3\apache-maven\bin\..
 Java version: 1.8.0_232, vendor: AdoptOpenJDK, runtime: C:\Program Files\AdoptOpenJDK\jdk-8.0.232.09-hotspot\jre
 Default locale: en_US, platform encoding: Cp1250
 OS name: "windows 10", version: "10.0", arch: "amd64", family: "windows" 
+```
 
 Pour builder l'application mettez vous sous la racine de l'application (cd Projet_7_OC/projet_7/). Ensuite tapez la commande suivante dans votre terminal :
 
