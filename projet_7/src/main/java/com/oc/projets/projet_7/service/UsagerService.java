@@ -22,7 +22,7 @@ import com.oc.projets.projet_7.dto.LivreDTO;
 import com.oc.projets.projet_7.dto.UsagerDTO;
 import com.oc.projets.projet_7.dto.UsagerGetDTO;
 import com.oc.projets.projet_7.entity.Emprunt;
-import com.oc.projets.projet_7.entity.Livre;
+import com.oc.projets.projet_7.entity.Exemplaire;
 import com.oc.projets.projet_7.entity.Usager;
 import com.oc.projets.projet_7.exception.EmpruntException;
 import com.oc.projets.projet_7.exception.PasswordException;

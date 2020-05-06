@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.oc.projets.projet_7.conversion.ConversionEmprunt;
 import com.oc.projets.projet_7.dto.EmpruntDTO;
 import com.oc.projets.projet_7.entity.Emprunt;
+import com.oc.projets.projet_7.entity.Exemplaire;
 import com.oc.projets.projet_7.entity.Livre;
 import com.oc.projets.projet_7.entity.Usager;
 import com.oc.projets.projet_7.exception.EmpruntException;
@@ -33,10 +34,16 @@ public class EmpruntService {
 	Logger logger = LoggerFactory.getLogger(EmpruntService.class);
 	
 	@Autowired
+	private ExemplaireService exemplaireService;
+	
+	@Autowired
 	private LivreService livreService;
 	
 	@Autowired
 	private ConversionEmprunt conversionEmprunt;
+	
+	@Autowired
+	private UsagerService usagerService;
 	
 	@Autowired
 	private UsagerConnecteService usagerConnecteService;
@@ -73,7 +80,8 @@ public class EmpruntService {
 		logger.info("Début de la méthode create. Prend un argument type EmpruntDTO : " + empruntDTO.toString());
 		
 		Emprunt emprunt = this.conversionEmprunt.convertToEntity(empruntDTO);
-		Usager usager = this.usagerConnecteService.authentification();
+		//Usager usager = this.usagerConnecteService.authentification();
+		Usager usager = this.usagerService.findById(emprunt.getUsager().getId());
 		emprunt.setUsager(usager);
 		
 		LocalDate localDate = LocalDate.now();
@@ -87,10 +95,11 @@ public class EmpruntService {
 		emprunt.setProlonge(false);
 			
 		emprunt.setActif(true);
-		Livre livre = this.livreService.findById(emprunt.getLivre().getId());
+		Exemplaire exemplaire = this.exemplaireService.findById(emprunt.getExemplaire().getId());
+		Livre livre = exemplaire.getLivre();
 		livre.setNbreExemplaires(livre.getNbreExemplaires() - 1);
 		this.livreService.editLivre(livre);
-		emprunt.setLivre(livre);
+		emprunt.setExemplaire(exemplaire);
 		this.empruntRepository.save(emprunt);
 		empruntDTO = this.conversionEmprunt.convertToDto(emprunt);
 		
@@ -148,10 +157,12 @@ public class EmpruntService {
 		
 		logger.info("Début de la méthode dejaEnPossession. Prend un argument de type EmpruntDTO : " + empruntDTO.toString());
 		
-		Usager usager = this.usagerConnecteService.authentification();
+		//Usager usager = this.usagerConnecteService.authentification();
+		Usager usager = this.usagerService.findById(empruntDTO.getUsager().getId());
 		List<Emprunt> emprunts = this.empruntRepository.findByUsagerAndActif(usager, true);
+		Exemplaire exemplaire = this.exemplaireService.findById(empruntDTO.getExemplaire().getId());
 		for(int i = 0;i < emprunts.size();i++) {
-			if(emprunts.get(i).getLivre().getId().equals(empruntDTO.getLivre().getId())) {
+			if(emprunts.get(i).getExemplaire().getLivre().getId().equals(exemplaire.getLivre().getId())) {
 				
 				logger.warn("Dans la méthode dejaEnPossession. L'usager essaie d'emprunter un livre dont il est déjà en possession.");
 				
@@ -161,9 +172,12 @@ public class EmpruntService {
 		logger.info("Fin de la méthode dejaEnPossession. Ne retourne rien.");
 	}
 	
-	public List<EmpruntDTO> getEmpruntsToday(){
-		LocalDate date = LocalDate.now();
-		List<Emprunt> emprunts = this.empruntRepository.findByDateEmpruntAndActif(date, true);
+	public List<EmpruntDTO> getEmpruntsRetard(){
+		//LocalDate date = LocalDate.now();
+//		List<Emprunt> emprunts = this.empruntRepository.findByDateEmpruntAndActif(date, true);
+		logger.info("Début de la méthode getEmpruntsRetard");
+		List<Emprunt> emprunts = this.empruntRepository.findEmpruntsRetard();
+		logger.info("Après liste : " + emprunts);
 		return emprunts.stream().map(emprunt -> this.conversionEmprunt.convertToDto(emprunt)).collect(Collectors.toList());
 	}
 	

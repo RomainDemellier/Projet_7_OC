@@ -33,8 +33,8 @@ public class Emprunt implements Serializable {
 	private Long id;
 	
 	@ManyToOne
-	@JoinColumn(name = "livre_id", nullable = false)
-	private Livre livre;
+	@JoinColumn(name = "exemplaire_id", nullable = false)
+	private Exemplaire exemplaire;
 	
     @ManyToOne
     @JoinColumn(name = "usager_id", nullable = false)
@@ -63,12 +63,12 @@ public class Emprunt implements Serializable {
 		this.id = id;
 	}
 
-	public Livre getLivre() {
-		return livre;
+	public Exemplaire getExemplaire() {
+		return exemplaire;
 	}
 
-	public void setLivre(Livre livre) {
-		this.livre = livre;
+	public void setExemplaire(Exemplaire exemplaire) {
+		this.exemplaire = exemplaire;
 	}
 
 	public Usager getUsager() {
@@ -113,7 +113,7 @@ public class Emprunt implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Emprunt [id=" + id + ", livre=" + livre + ", usager=" + usager + ", dateEmprunt=" + dateEmprunt
-				+ ", dateRetour=" + dateRetour + ", prolonge=" + prolonge + ", actif=" + actif + "]";
+		return "Emprunt [id=" + id + ", exemplaire=" + exemplaire + ", usager=" + usager + ", dateEmprunt="
+				+ dateEmprunt + ", dateRetour=" + dateRetour + ", prolonge=" + prolonge + ", actif=" + actif + "]";
 	}
 }

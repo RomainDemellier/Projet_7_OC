@@ -25,4 +25,7 @@ public interface EmpruntRepository extends JpaRepository<Emprunt, Long> {
 	List<Emprunt> findByDateEmpruntAndActif(LocalDate date, Boolean actif);
 	
 	List<Emprunt> findAllByOrderByDateEmpruntDesc();
+	
+	@Query(value = "SELECT * FROM emprunt WHERE actif = true AND date_retour <= current_date ", nativeQuery = true)
+	List<Emprunt> findEmpruntsRetard();
 }

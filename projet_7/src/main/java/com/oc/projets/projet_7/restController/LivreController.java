@@ -20,13 +20,14 @@ import com.oc.projets.projet_7.conversion.ConversionLivre;
 import com.oc.projets.projet_7.dto.LivreCreationDTO;
 import com.oc.projets.projet_7.dto.LivreDTO;
 import com.oc.projets.projet_7.entity.Auteur;
+import com.oc.projets.projet_7.entity.Exemplaire;
 import com.oc.projets.projet_7.entity.Livre;
 import com.oc.projets.projet_7.service.AuteurService;
 import com.oc.projets.projet_7.service.LivreService;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api")
+@RequestMapping("/api/livre")
 public class LivreController {
 
 	@Autowired
@@ -36,13 +37,13 @@ public class LivreController {
 	private ConversionLivre conversionLivre;
 	
 	/* Retourne la liste de tous les livres */
-	@GetMapping("/livre")
+	@GetMapping("")
 	public ResponseEntity<List<LivreDTO>> getAll(){
 		return ResponseEntity.ok(this.livreService.getAllLivres());
 	}
 	
 	/* Retourne un livre en fonction de son id */
-	@GetMapping("/livre/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<LivreDTO> getById(@PathVariable(value = "id") Long livreId) {
 		LivreDTO livreDTO = this.livreService.getLivre(livreId);
 		if(livreDTO != null) {
@@ -53,13 +54,13 @@ public class LivreController {
 	}
 	
 	/* Créer un livre */
-	@PostMapping("/livre/create")
+	@PostMapping("/create")
 	@PreAuthorize("hasAuthority('ADMIN')")
-	public ResponseEntity<Livre> createLivre(@RequestBody LivreCreationDTO livre) {
+	public ResponseEntity<Livre> createLivre(@RequestBody LivreDTO livre) {
 		return ResponseEntity.ok(this.livreService.createLivre(livre));
 	}
 	
-	@PutMapping("/livre/editNbreExemplaires")
+	@PutMapping("/editNbreExemplaires")
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<LivreDTO> editNbreExemplaires(@RequestBody LivreDTO livreDTO) {
 		return ResponseEntity.ok(this.livreService.editNbreExemplaires(livreDTO));

@@ -12,8 +12,6 @@ public class LivreDTO {
 	
 	private int nbreExemplaires;
 	
-	private String fullNameAuteur;
-	
 	public LivreDTO() {
 		
 	}
@@ -58,17 +56,9 @@ public class LivreDTO {
 		this.nbreExemplaires = nbreExemplaires;
 	}
 
-	public String getFullNameAuteur() {
-		return fullNameAuteur;
-	}
-
-	public void setFullNameAuteur(String fullNameAuteur) {
-		this.fullNameAuteur = fullNameAuteur;
-	}
-
 	@Override
 	public String toString() {
 		return "LivreDTO [id=" + id + ", titre=" + titre + ", auteur=" + auteur + ", genre=" + genre
-				+ ", nbreExemplaires=" + nbreExemplaires + ", fullNameAuteur=" + fullNameAuteur + "]";
+				+ ", nbreExemplaires=" + nbreExemplaires + "]";
 	}
 }

@@ -8,7 +8,7 @@ public class EmpruntDTO implements Serializable {
 
 	private Long id;
 	
-	private LivreDTO livre;
+	private ExemplaireDTO exemplaire;
 	
 	private UsagerGetDTO usager;
 	
@@ -32,12 +32,12 @@ public class EmpruntDTO implements Serializable {
 		this.id = id;
 	}
 
-	public LivreDTO getLivre() {
-		return livre;
+	public ExemplaireDTO getExemplaire() {
+		return exemplaire;
 	}
 
-	public void setLivre(LivreDTO livre) {
-		this.livre = livre;
+	public void setExemplaire(ExemplaireDTO exemplaireDTO) {
+		this.exemplaire = exemplaireDTO;
 	}
 
 	public UsagerGetDTO getUsager() {
@@ -83,7 +83,7 @@ public class EmpruntDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "EmpruntDTO [id=" + id + ", livre=" + livre + ", usager=" + usager + ", dateEmprunt=" + dateEmprunt
-				+ ", dateRetour=" + dateRetour + ", prolonge=" + prolonge + ", actif=" + actif + "]";
+		return "EmpruntDTO [id=" + id + ", exemplaireDTO=" + exemplaire + ", usager=" + usager + ", dateEmprunt="
+				+ dateEmprunt + ", dateRetour=" + dateRetour + ", prolonge=" + prolonge + ", actif=" + actif + "]";
 	}
 }

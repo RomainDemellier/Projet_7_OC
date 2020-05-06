@@ -29,10 +29,11 @@ import com.oc.projets.projet_7.dto.EmpruntDTO;
 import com.oc.projets.projet_7.dto.LivreDTO;
 import com.oc.projets.projet_7.dto.UsagerGetDTO;
 import com.oc.projets.projet_7.entity.Emprunt;
-import com.oc.projets.projet_7.entity.Livre;
+import com.oc.projets.projet_7.entity.Exemplaire;
 import com.oc.projets.projet_7.entity.Usager;
 import com.oc.projets.projet_7.repository.EmpruntRepository;
 import com.oc.projets.projet_7.service.EmpruntService;
+import com.oc.projets.projet_7.service.ExemplaireService;
 import com.oc.projets.projet_7.service.LivreService;
 import com.oc.projets.projet_7.service.UsagerService;
 
@@ -47,6 +48,9 @@ public class EmpruntController {
 	
 	@Autowired
 	private LivreService livreService;
+	
+	@Autowired
+	private ExemplaireService exemplaireService;
 	
 	@Autowired
 	private EmpruntService empruntService;
@@ -68,12 +72,15 @@ public class EmpruntController {
 	}
 	
 	@PostMapping("/create")
-	@PreAuthorize("isAuthenticated()")
+	//@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<EmpruntDTO> emprunter(@RequestBody EmpruntDTO empruntDTO) {
 		
 		try {
 			this.empruntService.dejaEnPossession(empruntDTO);
-			this.livreService.estDisponible(empruntDTO.getLivre().getId());
+			Long livreId = this.exemplaireService.findById(empruntDTO.getExemplaire().getId()).getLivre().getId();
+//			this.livreService.estDisponible(empruntDTO.getExemplaireDTO().getLivre().getId());
+			this.livreService.estDisponible(livreId);
 			return ResponseEntity.ok(this.empruntService.create(empruntDTO));
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -97,12 +104,12 @@ public class EmpruntController {
 	@PreAuthorize("isAuthenticated()")
 	public ResponseEntity<EmpruntDTO> rendre(@PathVariable(value = "id") Long empruntId) {
 		Emprunt emprunt = this.empruntService.findById(empruntId);
-		this.livreService.rendre(emprunt.getLivre());
+		this.livreService.rendre(emprunt.getExemplaire().getLivre());
 		return ResponseEntity.ok(this.empruntService.delete(emprunt));
 	}
 	
 	@GetMapping("/batch")
-	public ResponseEntity<List<EmpruntDTO>> getEmpruntsToday(){
-		return ResponseEntity.ok(this.empruntService.getEmpruntsToday());
+	public ResponseEntity<List<EmpruntDTO>> getEmpruntsRetard(){
+		return ResponseEntity.ok(this.empruntService.getEmpruntsRetard());
 	}
 }

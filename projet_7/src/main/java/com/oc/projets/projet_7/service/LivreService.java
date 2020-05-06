@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.oc.projets.projet_7.conversion.ConversionLivre;
 import com.oc.projets.projet_7.dto.LivreCreationDTO;
 import com.oc.projets.projet_7.dto.LivreDTO;
+import com.oc.projets.projet_7.entity.Exemplaire;
 import com.oc.projets.projet_7.entity.Livre;
 import com.oc.projets.projet_7.exception.EmpruntException;
 import com.oc.projets.projet_7.exception.ResourceNotFoundException;
@@ -27,12 +28,12 @@ public class LivreService {
 	
 	Logger logger = LoggerFactory.getLogger(LivreService.class);
 	
-	public Livre createLivre(LivreCreationDTO livreCreationDTO) {
+	public Livre createLivre(LivreDTO livreDTO) {
 		
-		logger.info("Début de la méthode createLivre. Prend en argument de type LivreCreationDTO : " + livreCreationDTO.toString());
+		logger.info("Début de la méthode createLivre. Prend en argument de type LivreCreationDTO : " + livreDTO.toString());
 		
-		Livre livre = this.conversionLivre.convertToEntity(livreCreationDTO);
-		livre.setFullNameAuteur(livre.getAuteur().getPrenom() + ' ' + livre.getAuteur().getNom());
+		Livre livre = this.conversionLivre.convertToEntity(livreDTO);
+		//livre.setFullNameAuteur(livre.getAuteur().getPrenom() + ' ' + livre.getAuteur().getNom());
 		livre = this.livreRepository.save(livre);
 		
 		logger.info("Fin de la méthode createLivre. Retourne un Livre : " + livre.toString());
@@ -59,9 +60,9 @@ public class LivreService {
 		livre.setNbreExemplaires(livreDTO.getNbreExemplaires());
 		livre = this.editLivre(livre);
 		
-		logger.info("Fin de la méthode editNbreExemplaires. Retourne un LivreDTO" + this.conversionLivre.convertToDto(livre).toString());
+		logger.info("Fin de la méthode editNbreExemplaires. Retourne un LivreDTO" + this.conversionLivre.convertToDTO(livre).toString());
 		
-		return this.conversionLivre.convertToDto(livre);
+		return this.conversionLivre.convertToDTO(livre);
 	}
 	
 	public LivreDTO getLivre(Long id) {
@@ -70,9 +71,9 @@ public class LivreService {
 		
 		Livre livre = this.findById(id);
 		
-		logger.info("Fin de la méthode getLivre. Retourne un LivreDTO : " + this.conversionLivre.convertToDto(livre).toString());
+		logger.info("Fin de la méthode getLivre. Retourne un LivreDTO : " + this.conversionLivre.convertToDTO(livre).toString());
 		
-		return this.conversionLivre.convertToDto(livre);
+		return this.conversionLivre.convertToDTO(livre);
 	}
 	
 	public List<LivreDTO> getAllLivres(){
@@ -84,7 +85,7 @@ public class LivreService {
 		
 		logger.info("Fin de la méthode getAllLivres. Retourne une liste List<LivreDTO>.");
 		
-		return livres.stream().map(livre -> this.conversionLivre.convertToDto(livre)).collect(Collectors.toList());
+		return livres.stream().map(livre -> this.conversionLivre.convertToDTO(livre)).collect(Collectors.toList());
 	}
 	
 	public Livre findById(Long livreId) {

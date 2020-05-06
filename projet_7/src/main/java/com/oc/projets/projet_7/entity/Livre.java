@@ -1,7 +1,5 @@
 package com.oc.projets.projet_7.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -21,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdAt", "updateAt"},
 		allowGetters = true)
-public class Livre implements Serializable {
+public class Livre {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,12 +36,12 @@ public class Livre implements Serializable {
 	@Column(name = "nbre_exemplaires")
 	private int nbreExemplaires;
 	
-	@Column(name = "full_name_auteur")
-	private String fullNameAuteur;
-
+//	@Column(name = "full_name_auteur")
+//	private String fullNameAuteur;
+	
 	public Livre() {
-		super();
 		// TODO Auto-generated constructor stub
+		super();
 	}
 
 	public Long getId() {
@@ -86,17 +84,17 @@ public class Livre implements Serializable {
 		this.nbreExemplaires = nbreExemplaires;
 	}
 
-	public String getFullNameAuteur() {
-		return fullNameAuteur;
-	}
-
-	public void setFullNameAuteur(String fullNameAuteur) {
-		this.fullNameAuteur = fullNameAuteur;
-	}
+//	public String getFullNameAuteur() {
+//		return fullNameAuteur;
+//	}
+//
+//	public void setFullNameAuteur(String fullNameAuteur) {
+//		this.fullNameAuteur = fullNameAuteur;
+//	}
 
 	@Override
 	public String toString() {
 		return "Livre [id=" + id + ", titre=" + titre + ", auteur=" + auteur + ", genre=" + genre + ", nbreExemplaires="
-				+ nbreExemplaires + ", fullNameAuteur=" + fullNameAuteur + "]";
+				+ nbreExemplaires + "]";
 	}
 }
