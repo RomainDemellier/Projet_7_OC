@@ -69,58 +69,16 @@ ALTER SEQUENCE public.auteur_id_seq OWNED BY public.auteur.id;
 
 
 --
--- Name: batch_job_execution_seq; Type: SEQUENCE; Schema: public; Owner: romain
---
-
-CREATE SEQUENCE public.batch_job_execution_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.batch_job_execution_seq OWNER TO romain;
-
---
--- Name: batch_job_seq; Type: SEQUENCE; Schema: public; Owner: romain
---
-
-CREATE SEQUENCE public.batch_job_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.batch_job_seq OWNER TO romain;
-
---
--- Name: batch_step_execution_seq; Type: SEQUENCE; Schema: public; Owner: romain
---
-
-CREATE SEQUENCE public.batch_step_execution_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.batch_step_execution_seq OWNER TO romain;
-
---
 -- Name: emprunt; Type: TABLE; Schema: public; Owner: romain
 --
 
 CREATE TABLE public.emprunt (
     id bigint NOT NULL,
     actif boolean,
-    date_emprunt timestamp without time zone,
-    date_retour timestamp without time zone,
+    date_emprunt date,
+    date_retour date,
     prolonge boolean,
-    livre_id bigint NOT NULL,
+    exemplaire_id bigint NOT NULL,
     usager_id bigint NOT NULL
 );
 
@@ -149,16 +107,49 @@ ALTER SEQUENCE public.emprunt_id_seq OWNED BY public.emprunt.id;
 
 
 --
+-- Name: exemplaire; Type: TABLE; Schema: public; Owner: romain
+--
+
+CREATE TABLE public.exemplaire (
+    id bigint NOT NULL,
+    etat character varying(255),
+    livre_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.exemplaire OWNER TO romain;
+
+--
+-- Name: exemplaire_id_seq; Type: SEQUENCE; Schema: public; Owner: romain
+--
+
+CREATE SEQUENCE public.exemplaire_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.exemplaire_id_seq OWNER TO romain;
+
+--
+-- Name: exemplaire_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: romain
+--
+
+ALTER SEQUENCE public.exemplaire_id_seq OWNED BY public.exemplaire.id;
+
+
+--
 -- Name: livre; Type: TABLE; Schema: public; Owner: romain
 --
 
 CREATE TABLE public.livre (
     id bigint NOT NULL,
     genre character varying(255),
-    nbre_exemplaires integer NOT NULL,
+    nbre_exemplaires integer,
     titre character varying(255),
-    auteur_id bigint NOT NULL,
-    full_name_auteur character varying(255)
+    auteur_id bigint NOT NULL
 );
 
 
@@ -237,6 +228,13 @@ ALTER TABLE ONLY public.emprunt ALTER COLUMN id SET DEFAULT nextval('public.empr
 
 
 --
+-- Name: exemplaire id; Type: DEFAULT; Schema: public; Owner: romain
+--
+
+ALTER TABLE ONLY public.exemplaire ALTER COLUMN id SET DEFAULT nextval('public.exemplaire_id_seq'::regclass);
+
+
+--
 -- Name: livre id; Type: DEFAULT; Schema: public; Owner: romain
 --
 
@@ -258,9 +256,9 @@ COPY public.auteur (id, nom, prenom) FROM stdin;
 1	Verne	Jules
 2	Dumas	Alexandre
 3	Rousseau	Jean-Jacques
-5	Gary	Romain
-6	Zola	Emile
-7	Hugo	Victor
+4	Gary	Romain
+5	Zola	Emile
+6	Hugo	Victor
 \.
 
 
@@ -268,32 +266,55 @@ COPY public.auteur (id, nom, prenom) FROM stdin;
 -- Data for Name: emprunt; Type: TABLE DATA; Schema: public; Owner: romain
 --
 
-COPY public.emprunt (id, actif, date_emprunt, date_retour, prolonge, livre_id, usager_id) FROM stdin;
-1	f	2020-03-17 00:00:00	2020-04-14 00:00:00	f	5	8
-2	f	2020-03-17 00:00:00	2020-04-14 00:00:00	f	8	8
-3	f	2020-03-18 00:00:00	2020-04-15 00:00:00	f	6	8
-5	f	2020-03-18 00:00:00	2020-04-15 00:00:00	f	5	8
-4	f	2020-03-18 00:00:00	2020-05-13 00:00:00	t	8	8
-6	f	2020-03-18 00:00:00	2020-05-13 00:00:00	t	6	8
-7	f	2020-03-19 00:00:00	2020-05-14 00:00:00	t	5	8
-9	t	2020-03-31 00:00:00	2020-05-26 00:00:00	t	25	8
-8	f	2020-03-25 00:00:00	2020-05-20 00:00:00	t	24	8
-11	t	2020-04-07 00:00:00	2020-06-02 00:00:00	t	27	9
-19	f	2020-04-11 00:00:00	2020-05-09 00:00:00	f	25	9
-18	t	2020-04-11 00:00:00	2020-06-06 00:00:00	t	8	9
-20	t	2020-04-14 00:00:00	2020-06-09 00:00:00	t	25	9
-21	t	2020-04-16 00:00:00	2020-05-14 00:00:00	f	26	8
-10	f	2020-04-03 00:00:00	2020-05-01 00:00:00	f	8	8
-12	t	2020-04-11 00:00:00	2020-06-06 00:00:00	t	27	8
-22	t	2020-04-16 00:00:00	2020-05-14 00:00:00	f	8	8
-26	t	2020-04-23 00:00:00	2020-05-21 00:00:00	f	28	8
-23	f	2020-04-22 00:00:00	2020-05-20 00:00:00	f	7	14
-24	f	2020-04-23 00:00:00	2020-05-21 00:00:00	f	27	14
-28	t	2020-04-26 00:00:00	2020-05-24 00:00:00	f	26	14
-25	f	2020-04-23 00:00:00	2020-05-21 00:00:00	f	24	14
-27	f	2020-04-26 00:00:00	2020-05-24 00:00:00	f	28	14
-29	t	2020-04-27 00:00:00	2020-05-25 00:00:00	f	24	14
-30	t	2020-04-27 00:00:00	2020-05-25 00:00:00	f	28	14
+COPY public.emprunt (id, actif, date_emprunt, date_retour, prolonge, exemplaire_id, usager_id) FROM stdin;
+2	f	2020-05-05	2020-06-02	f	31	2
+4	t	2020-05-06	2020-06-03	f	14	2
+7	t	2020-05-06	2020-06-03	f	36	3
+5	f	2020-05-06	2020-06-03	f	23	3
+8	f	2020-05-06	2020-06-03	f	38	4
+3	t	2020-03-17	2020-04-14	f	32	2
+10	t	2020-03-21	2020-04-18	f	26	4
+9	t	2020-05-06	2020-07-01	t	29	4
+6	f	2020-03-19	2020-04-16	f	34	3
+11	t	2020-03-21	2020-04-18	f	34	3
+\.
+
+
+--
+-- Data for Name: exemplaire; Type: TABLE DATA; Schema: public; Owner: romain
+--
+
+COPY public.exemplaire (id, etat, livre_id) FROM stdin;
+12	neuf	1
+13	neuf	1
+14	neuf	1
+15	vieux	1
+16	vieux	1
+17	neuf	3
+18	moyen	3
+19	vieux	3
+20	vieux	3
+21	vieux	4
+22	moyen	4
+23	moyen	5
+24	neuf	5
+25	vieux	5
+26	vieux	6
+27	moyen	6
+28	moyen	7
+29	neuf	7
+30	neuf	7
+31	vieux	8
+32	vieux	9
+33	moyen	9
+34	moyen	10
+35	moyen	11
+36	neuf	11
+37	vieux	11
+38	moyen	12
+39	vieux	12
+40	vieux	13
+41	neuf	13
 \.
 
 
@@ -301,19 +322,19 @@ COPY public.emprunt (id, actif, date_emprunt, date_retour, prolonge, livre_id, u
 -- Data for Name: livre; Type: TABLE DATA; Schema: public; Owner: romain
 --
 
-COPY public.livre (id, genre, nbre_exemplaires, titre, auteur_id, full_name_auteur) FROM stdin;
-10	Autobiographie	0	Les confessions	3	Jean-Jacques Rousseau
-9	aventure	0	Les trois mousquetaires	2	Alexandre Dumas
-6	science-fiction	4	Vingt mille lieues sous les mers	1	Jules Verne
-5	science-fiction	3	Voyage au centre de la terre	1	Jules Verne
-8	aventure	2	La reine Margot	2	Alexandre Dumas
-29	Roman	5	Notre dame de Paris	7	Victor Hugo
-25	Roman	2	La vie devant soi	5	Romain Gary
-7	science-fiction	3	De la terre à la lune	1	Jules Verne
-27	Drame	6	Germinal	6	Emile Zola
-26	Aventure	2	Vingt ans après	2	Alexandre Dumas
-24	Aventure	4	Le comte de Monte-Cristo	2	Alexandre Dumas
-28	Roman	4	Les misérables	7	Victor Hugo
+COPY public.livre (id, genre, nbre_exemplaires, titre, auteur_id) FROM stdin;
+3	Science-fiction	4	Vingt mille lieues sous les mers	1
+4	Science-fiction	2	Voyage au centre de la Terre	1
+13	Roman	2	Notre dame de Paris	6
+9	Autobiographie	1	Les confessions	3
+8	Aventure	1	Vingt ans après	2
+1	Science-fiction	4	De la Terre à la Lune	1
+11	Drame	2	Germinal	5
+7	Aventure	2	Les trois mousquetaires	2
+6	Aventure	1	Le comte de Monte-Cristo	2
+5	Aventure	3	La reine Margot	2
+12	Roman	2	Les misérables	6
+10	Roman	0	La vie devant soi	4
 \.
 
 
@@ -322,13 +343,10 @@ COPY public.livre (id, genre, nbre_exemplaires, titre, auteur_id, full_name_aute
 --
 
 COPY public.usager (id, email, nom, password, prenom, role) FROM stdin;
-8	romain.demellier@gmail.com	Demellier	$2a$10$6wnsrsI4wLmq2mXvcpyPqe/5gQ.DRrCtRz3gjhqMlusAymkbyh7mq	Romain	USER
-12	antoine.demellier@gmail.com	Demellier	$2a$10$bHm.qp/kosyrLLXDKLUBHeht4owb2P32qfxaIK/VVbYdwN2QubSPq	Antoine	USER
-13	xavier.dumazel@gmail.com	Dumazel	$2a$10$hhOHVFRt0t1QSmO6O4AE/uVyIrDu5arRNjOEoV3LeLJdA4ili.Hhe	Xavier	ADMIN
-10	muriel.demellier@gmail.com	Demellier	$2a$10$9mhmYkL821Ft332uChOWoewbt2zIiiEAnnfUebk6iAtwi6thoboyG	Muriel	USER
-9	romain.demellier2@gmail.com	Demellier	$2a$10$S86Q3f.zb3pT.rClhHnlXuVF1R5ZPI.ZrC75ZT0qM.mw8C/RygIG.	Romain	ADMIN
-14	martin.dupont@gmail.com	Dupont	$2a$10$xnVkv/4nTDwk9nrCisN0p.l3Nz/V4kEj9fno4oV42PlXrJ911ScnK	Martin	USER
-11	daniel.demellier@gmail.com	Demellier	$2a$10$ub2N5nTT1oV5DrS4tsc/JuadTuLivKSfL3Pb0lPlRIQ8HZ7x5v8rW	Daniel	USER
+1	romain.demellier@gmail.com	Demellier	$2a$10$motIfR2mf/o7bKoYHEl5U.g5NbdnNbDxYgrBCTOJDInn1KJfr6Fke	Romain	ADMIN
+2	martin.dupont@gmail.com	Dupont	$2a$10$IWClF5DS748zT48KZ8QB/.BUgGTyUxAYerQdDUk8HO4M6H/7qq14q	Martin	USER
+3	robert.durand@gmail.com	Durand	$2a$10$P5rvjnN0F5OCki/wl5ObCer7z2UTlcMZ1aMBjdamPeZVZcBqPm6sy	Robert	USER
+4	genevieve.lamotte@gmail.com	Lamotte	$2a$10$T2g2gqw7wKl0p06.wB95IeuitUQLcwE/DCK5IGOObpvjRCI5PHyPO	Geneviève	USER
 \.
 
 
@@ -336,49 +354,35 @@ COPY public.usager (id, email, nom, password, prenom, role) FROM stdin;
 -- Name: auteur_id_seq; Type: SEQUENCE SET; Schema: public; Owner: romain
 --
 
-SELECT pg_catalog.setval('public.auteur_id_seq', 7, true);
-
-
---
--- Name: batch_job_execution_seq; Type: SEQUENCE SET; Schema: public; Owner: romain
---
-
-SELECT pg_catalog.setval('public.batch_job_execution_seq', 124, true);
-
-
---
--- Name: batch_job_seq; Type: SEQUENCE SET; Schema: public; Owner: romain
---
-
-SELECT pg_catalog.setval('public.batch_job_seq', 124, true);
-
-
---
--- Name: batch_step_execution_seq; Type: SEQUENCE SET; Schema: public; Owner: romain
---
-
-SELECT pg_catalog.setval('public.batch_step_execution_seq', 123, true);
+SELECT pg_catalog.setval('public.auteur_id_seq', 6, true);
 
 
 --
 -- Name: emprunt_id_seq; Type: SEQUENCE SET; Schema: public; Owner: romain
 --
 
-SELECT pg_catalog.setval('public.emprunt_id_seq', 30, true);
+SELECT pg_catalog.setval('public.emprunt_id_seq', 11, true);
+
+
+--
+-- Name: exemplaire_id_seq; Type: SEQUENCE SET; Schema: public; Owner: romain
+--
+
+SELECT pg_catalog.setval('public.exemplaire_id_seq', 41, true);
 
 
 --
 -- Name: livre_id_seq; Type: SEQUENCE SET; Schema: public; Owner: romain
 --
 
-SELECT pg_catalog.setval('public.livre_id_seq', 29, true);
+SELECT pg_catalog.setval('public.livre_id_seq', 13, true);
 
 
 --
 -- Name: usager_id_seq; Type: SEQUENCE SET; Schema: public; Owner: romain
 --
 
-SELECT pg_catalog.setval('public.usager_id_seq', 14, true);
+SELECT pg_catalog.setval('public.usager_id_seq', 4, true);
 
 
 --
@@ -395,6 +399,14 @@ ALTER TABLE ONLY public.auteur
 
 ALTER TABLE ONLY public.emprunt
     ADD CONSTRAINT emprunt_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: exemplaire exemplaire_pkey; Type: CONSTRAINT; Schema: public; Owner: romain
+--
+
+ALTER TABLE ONLY public.exemplaire
+    ADD CONSTRAINT exemplaire_pkey PRIMARY KEY (id);
 
 
 --
@@ -438,11 +450,19 @@ ALTER TABLE ONLY public.livre
 
 
 --
--- Name: emprunt fkjnn7ll8vl64xhmb6779svt7c; Type: FK CONSTRAINT; Schema: public; Owner: romain
+-- Name: emprunt fkj7uf2osy43jrxo78f2l217ar4; Type: FK CONSTRAINT; Schema: public; Owner: romain
 --
 
 ALTER TABLE ONLY public.emprunt
-    ADD CONSTRAINT fkjnn7ll8vl64xhmb6779svt7c FOREIGN KEY (livre_id) REFERENCES public.livre(id);
+    ADD CONSTRAINT fkj7uf2osy43jrxo78f2l217ar4 FOREIGN KEY (exemplaire_id) REFERENCES public.exemplaire(id);
+
+
+--
+-- Name: exemplaire fkkcraqrinp6mtrkkg9rigi6len; Type: FK CONSTRAINT; Schema: public; Owner: romain
+--
+
+ALTER TABLE ONLY public.exemplaire
+    ADD CONSTRAINT fkkcraqrinp6mtrkkg9rigi6len FOREIGN KEY (livre_id) REFERENCES public.livre(id);
 
 
 --
